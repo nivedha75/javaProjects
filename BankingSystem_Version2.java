@@ -2,8 +2,12 @@
  * In this code, I am able to call the withdraw method first and then call the deposit
  * I modified the array data and the scanners in order to make this change
  * 
- * NOTE: I tried to make some big changes in the setup in the program, but the changes only decreased the efficacy of the code
- * so I decided to just change the flow by switching the methods but achieve the same results! */
+ * NOTE 1: I tried to make some big changes in the setup in the program, but the changes only decreased the efficacy of the code
+ * so I decided to just change the flow by switching the methods but achieve the same results! 
+ * 
+ * NOTE 2: I made some edits to the original banking system after creating this banking system version. Thus, I made sure
+ * that the user can enter negative values and the computer can handle it in the original banking system. Thus, please test out
+ * that feature in the other version, instead of this one. Thanks!*/
 
 package buddy;
 
@@ -74,11 +78,11 @@ class BankMaintenance {
 			BankAccount tempBankAccount = bankAccountList.get(i);
 			if (tempBankAccount.customerID == customerID && tempBankAccount.accountType == "checking") {
 				tempBankAccount.balance += amount;
-				System.out.println("Current balance in the checking account: " + tempBankAccount.balance);
+				System.out.println("Current balance in the checking account: $" + tempBankAccount.balance);
 				// tempBankAccount.deposit(customerID, amount);
 				bankAccountList.set(i, tempBankAccount);
 				transaction[1] = amount;
-				System.out.println("Overall change in checking account: " + (transaction[1] - transaction[0]));
+				System.out.println("Overall change in checking account: $" + (transaction[1] - transaction[0]));
 			}
 		}
 	}
@@ -91,11 +95,11 @@ class BankMaintenance {
 				if (tempBankAccount.balance >= amount) {
 					tempBankAccount.balance -= amount;
 					System.out
-							.println("Current balance in the checking account: " + tempBankAccount.balance);
+							.println("Current balance in the checking account: $" + tempBankAccount.balance);
 					// tempBankAccount.deposit(customerID, amount);
 					bankAccountList.set(i, tempBankAccount);
 					transaction[0] = amount;
-					System.out.println("Overall change in checking account: " + (-transaction[0]));
+					System.out.println("Overall change in checking account: $" + (-transaction[0]));
 					break;
 				} else {
 					transaction[0] = 0;
@@ -115,11 +119,11 @@ class BankMaintenance {
 				if (tempBankAccount.balance >= amount) {
 					tempBankAccount.balance -= amount;
 					System.out
-							.println("Current balance in the checking account: " + tempBankAccount.balance);
+							.println("Current balance in the checking account: $" + tempBankAccount.balance);
 					// tempBankAccount.deposit(customerID, amount);
 					bankAccountList.set(i, tempBankAccount);
 					transaction[2] = amount;
-					System.out.println("Overall change in checking account: "
+					System.out.println("Overall change in checking account: $"
 							+ (transaction[1] - transaction[0] - transaction[2]));
 					break;
 				} else {
@@ -137,17 +141,13 @@ class BankMaintenance {
 				if (tempBankAccount.customerID == customerID && tempBankAccount.accountType == "savings") {
 					tempBankAccount.balance += amount;
 					System.out
-							.println("Current balance in the savings account: " + tempBankAccount.balance);
+							.println("Current balance in the savings account: $" + tempBankAccount.balance);
 					// tempBankAccount.deposit(customerID, amount);
 					bankAccountList.set(i, tempBankAccount);
 				}
 			}
 		}
 
-	}
-
-	static void checkOverallChange() {
-		System.out.println("The overall change");
 	}
 
 	static void addCustomer(String name) {
@@ -167,7 +167,7 @@ class BankMaintenance {
 			SavingsAccount savingsObj = new SavingsAccount(customerID, initialAmount);
 			bankAccountList.add(savingsObj);
 		} else {
-			System.out.println("error!!!!!!!!!!!!!!!!!!!!!!!!!");
+			System.out.println("Invalid account type. Try again.");
 		}
 
 	}
@@ -221,9 +221,9 @@ public class BankingSystem_Version2 {
 
 			BankMaintenance.addAccount(ID, answer, initialAmount2);
 
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			System.out.println("A week has passed...");
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			
 			Scanner withdrawalAmount = new Scanner(System.in);
 			System.out.println("How much do you want to withdraw from your checking account?");
@@ -266,3 +266,4 @@ public class BankingSystem_Version2 {
 	}
 
 }
+
