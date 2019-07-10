@@ -1,0 +1,161 @@
+package GUIExamples;
+
+import javax.swing.*;
+import java.awt.color.*;
+import java.awt.event.*;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.*;
+
+public class MemoryGame extends JFrame implements ActionListener {
+	static JFrame frame;
+	static JPanel word;
+	static JPanel hangmanPanel;
+	static JPanel userInput;
+	static JLabel response;
+	static JLabel title;
+	static JLabel direction;
+	// static JLabel numTries;
+	static JLabel letter1;
+	static JLabel letter2;
+	static JLabel letter3;
+	static JLabel letter4;
+	static JTextField userLetter;
+	static String letterGuessed;
+	static JButton enter;
+	static JTextArea hangman;
+	static int counter = 0;
+
+	public static void main(String[] args) {
+		new MemoryGame();
+	}
+
+	public MemoryGame() {
+		word = new JPanel();
+		enter = new JButton();
+		hangman = new JTextArea();
+		hangman.setEditable(false);
+		hangmanPanel = new JPanel();
+		userInput = new JPanel();
+
+		userInput.setLayout(new BorderLayout());
+
+		letter1 = new JLabel();
+		letter2 = new JLabel();
+		letter3 = new JLabel();
+		letter4 = new JLabel();
+
+		letter1.setText("_");
+		letter2.setText("_");
+		letter3.setText("_");
+		letter4.setText("_");
+
+		letter1.setFont(new Font("Arial", Font.BOLD, 100));
+		letter2.setFont(new Font("Arial", Font.BOLD, 100));
+		letter3.setFont(new Font("Arial", Font.BOLD, 100));
+		letter4.setFont(new Font("Arial", Font.BOLD, 100));
+
+		word.add(letter1);
+		word.add(letter2);
+		word.add(letter3);
+		word.add(letter4);
+
+		direction = new JLabel("Enter Letter Here:");
+		direction.setFont(new Font("Arial", Font.BOLD, 30));
+		direction.setBounds(0, 0, 500, 500);
+		userInput.add(direction);
+		userLetter = new JTextField();
+		userInput.add(userLetter);
+		enter = new JButton("Guess");
+		enter.setBounds(800, 100, 100, 100);
+		enter.addActionListener(this);
+		enter.setFont(new Font("Arial", Font.BOLD, 30));
+		userInput.add(enter);
+
+		userLetter.setFont(new Font("Arial", Font.BOLD, 100));
+
+		hangmanPanel.add(hangman);
+
+		frame = new JFrame();
+		frame.setSize(1200, 800);
+		frame.setResizable(false);
+		frame.setTitle("Hangman");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		frame.setLayout(null);
+		frame.add(word);
+		word.setBounds(350, 600, 500, 700);
+		frame.add(userInput);
+		userInput.setBounds(50, 50, 500, 500);
+		frame.add(hangmanPanel);
+
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == enter) {
+			letterGuessed = userLetter.getText();
+			String[] word = { "j", "a", "v", "a" };
+			for (String i : word) {
+				if (letterGuessed.equalsIgnoreCase(i)) {
+					if (i.equalsIgnoreCase("j")) {
+						letter1.setText(i);
+					} else if (i.equalsIgnoreCase("a")) {
+						letter2.setText(i);
+						letter4.setText(i);
+					} else if (i.equalsIgnoreCase("v")) {
+						letter3.setText(i);
+					} else {
+						hangman.append("You guessed wrong.");
+						counter++;
+						if (counter == 1) {
+							System.out.println("  ___");
+							System.out.println(" |   |");
+							System.out.println(" |   0 ");
+							System.out.println(" |     ");
+							System.out.println(" |      ");
+							System.out.println("_|__   ");
+						}else if(counter == 2) {
+							System.out.println("  ___");
+							System.out.println(" |   |");
+							System.out.println(" |   0 ");
+							System.out.println(" |   |  ");
+							System.out.println(" |   |   ");
+							System.out.println("_|__   ");
+						}else if(counter == 3) {
+							System.out.println("  ___");
+							System.out.println(" |   |");
+							System.out.println(" |   0 ");
+							System.out.println(" |  _|  ");
+							System.out.println(" |   |  ");
+							System.out.println("_|__   ");
+						}else if(counter == 4) {
+							System.out.println("  ___");
+							System.out.println(" |   |");
+							System.out.println(" |   0 ");
+							System.out.println(" |  _|_ ");
+							System.out.println(" |   |  ");
+							System.out.println("_|__   ");
+						}else if(counter == 5) {
+							System.out.println("  ___");
+							System.out.println(" |   |");
+							System.out.println(" |   0 ");
+							System.out.println(" |  _|_  ");
+							System.out.println(" |   |  ");
+							System.out.println("_|__ /  ");
+						}else if(counter == 5) {
+							System.out.println("  ___");
+							System.out.println(" |   |");
+							System.out.println(" |   0 ");
+							System.out.println(" |  _|_  ");
+							System.out.println(" |   | ");
+							System.out.println("_|__ ^  ");
+						}
+					}
+
+				}
+			}
+		}
+	}
+}
