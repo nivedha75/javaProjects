@@ -11,12 +11,12 @@ import java.awt.event.*;
 public class MemoryGame extends JFrame implements ActionListener {
 	static JFrame frame;
 	static JPanel word;
-	static JPanel hangmanPanel;
+	//static JPanel hangmanPanel;
 	static JPanel userInput;
 	static JLabel response;
-	static JLabel title;
+	//static JLabel title;
 	static JLabel direction;
-	// static JLabel numTries;
+	//static JLabel numTries;
 	static JLabel letter1;
 	static JLabel letter2;
 	static JLabel letter3;
@@ -36,11 +36,14 @@ public class MemoryGame extends JFrame implements ActionListener {
 		enter = new JButton();
 		hangman = new JTextArea();
 		hangman.setEditable(false);
-		hangmanPanel = new JPanel();
+		//hangmanPanel = new JPanel();
 		userInput = new JPanel();
+		response = new JLabel();
 
-		userInput.setLayout(new BorderLayout());
-
+		// userInput.setLayout(new BorderLayout());
+		response.setBounds(700, 50, 500, 100);
+		response.setFont(new Font("Arial", Font.BOLD, 30));
+		
 		letter1 = new JLabel();
 		letter2 = new JLabel();
 		letter3 = new JLabel();
@@ -61,21 +64,24 @@ public class MemoryGame extends JFrame implements ActionListener {
 		word.add(letter3);
 		word.add(letter4);
 
+		userInput.setLayout(null);
 		direction = new JLabel("Enter Letter Here:");
 		direction.setFont(new Font("Arial", Font.BOLD, 30));
-		direction.setBounds(0, 0, 500, 500);
+		direction.setBounds(0, 0, 300, 100);
 		userInput.add(direction);
 		userLetter = new JTextField();
 		userInput.add(userLetter);
+		userLetter.setBounds(0, 100, 200, 100);
+		userLetter.setFont(new Font("Arial", Font.BOLD, 80));
 		enter = new JButton("Guess");
-		enter.setBounds(800, 100, 100, 100);
+		enter.setBounds(200, 100, 175, 100);
 		enter.addActionListener(this);
 		enter.setFont(new Font("Arial", Font.BOLD, 30));
 		userInput.add(enter);
 
-		userLetter.setFont(new Font("Arial", Font.BOLD, 100));
-
-		hangmanPanel.add(hangman);
+		hangman.setBounds(50, 50, 500, 550);
+		hangman.setFont(new Font("Consolas", Font.BOLD, 60));
+		//hangmanPanel.add(hangman);
 
 		frame = new JFrame();
 		frame.setSize(1200, 800);
@@ -88,12 +94,15 @@ public class MemoryGame extends JFrame implements ActionListener {
 		frame.add(word);
 		word.setBounds(350, 600, 500, 700);
 		frame.add(userInput);
-		userInput.setBounds(50, 50, 500, 500);
-		frame.add(hangmanPanel);
+		userInput.setBounds(700, 200, 400, 400);
+		frame.add(hangman);
+		frame.add(response);
+		//hangmanPanel.setBounds(50, 50, 200, 200);
 
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		boolean incorrectLetter = true;
 		if (e.getSource() == enter) {
 			letterGuessed = userLetter.getText();
 			String[] word = { "j", "a", "v", "a" };
@@ -101,61 +110,102 @@ public class MemoryGame extends JFrame implements ActionListener {
 				if (letterGuessed.equalsIgnoreCase(i)) {
 					if (i.equalsIgnoreCase("j")) {
 						letter1.setText(i);
+						response.setText("Correct! GOOD JOB!");
+						incorrectLetter = false;
 					} else if (i.equalsIgnoreCase("a")) {
 						letter2.setText(i);
 						letter4.setText(i);
-					} else if (i.equalsIgnoreCase("v")) {
-						letter3.setText(i);
+						response.setText("Correct! GOOD JOB!");
+						incorrectLetter = false;
 					} else {
-						hangman.append("You guessed wrong.");
-						counter++;
-						if (counter == 1) {
-							System.out.println("  ___");
-							System.out.println(" |   |");
-							System.out.println(" |   0 ");
-							System.out.println(" |     ");
-							System.out.println(" |      ");
-							System.out.println("_|__   ");
-						}else if(counter == 2) {
-							System.out.println("  ___");
-							System.out.println(" |   |");
-							System.out.println(" |   0 ");
-							System.out.println(" |   |  ");
-							System.out.println(" |   |   ");
-							System.out.println("_|__   ");
-						}else if(counter == 3) {
-							System.out.println("  ___");
-							System.out.println(" |   |");
-							System.out.println(" |   0 ");
-							System.out.println(" |  _|  ");
-							System.out.println(" |   |  ");
-							System.out.println("_|__   ");
-						}else if(counter == 4) {
-							System.out.println("  ___");
-							System.out.println(" |   |");
-							System.out.println(" |   0 ");
-							System.out.println(" |  _|_ ");
-							System.out.println(" |   |  ");
-							System.out.println("_|__   ");
-						}else if(counter == 5) {
-							System.out.println("  ___");
-							System.out.println(" |   |");
-							System.out.println(" |   0 ");
-							System.out.println(" |  _|_  ");
-							System.out.println(" |   |  ");
-							System.out.println("_|__ /  ");
-						}else if(counter == 5) {
-							System.out.println("  ___");
-							System.out.println(" |   |");
-							System.out.println(" |   0 ");
-							System.out.println(" |  _|_  ");
-							System.out.println(" |   | ");
-							System.out.println("_|__ ^  ");
-						}
+						letter3.setText(i);
+						response.setText("Correct! GOOD JOB!");
+						incorrectLetter = false;
 					}
-
 				}
 			}
+			if(letter1.getText().equals("j") && letter2.getText().equals("a") && letter3.getText().equals("v") && letter4.getText().equals("a")) {
+				response.setText("YOU WON! Congrats!");
+				enter.setEnabled(false);
+				
+			}
+			while (incorrectLetter) {
+				//hangman.append("You guessed wrong.");
+				counter++;
+				if (counter == 1) {
+					hangman.append("    ___\n");
+					hangman.append("   |   |\n");
+					hangman.append("   |   0 \n");
+					hangman.append("   |     \n");
+					hangman.append("   |      \n");
+					hangman.append("   |     \n");
+					hangman.append(" __|__   \n");
+					hangman.append("\n ");
+					response.setText("Wrong!");
+				} else if (counter == 2) {
+					hangman.setText(null);
+					hangman.append("    ___\n");
+					hangman.append("   |   |\n");
+					hangman.append("   |   0 \n");
+					hangman.append("   |   | \n");
+					hangman.append("   |   |   \n");
+					hangman.append("   |     \n");
+					hangman.append(" __|__   \n");
+					hangman.append("\n");
+					response.setText("Wrong!");
+				} else if (counter == 3) {
+					hangman.setText(null);
+					hangman.append("    ___\n");
+					hangman.append("   |   |\n");
+					hangman.append("   |   0 \n");
+					hangman.append("   |  _|\n");
+					hangman.append("   |   |   \n");
+					hangman.append("   |     \n");
+					hangman.append(" __|__   \n");
+					hangman.append("\n");
+					response.setText("Wrong!");
+				} else if (counter == 4) {
+					hangman.setText(null);
+					hangman.append("    ___\n");
+					hangman.append("   |   |\n");
+					hangman.append("   |   0 \n");
+					hangman.append("   |  _|_\n");
+					hangman.append("   |   |   \n");
+					hangman.append("   |     \n");
+					hangman.append(" __|__   \n");
+					hangman.append("\n");
+					response.setText("Wrong!");
+				} else if (counter == 5) {
+					hangman.setText(null);
+					hangman.append("    ___\n");
+					hangman.append("   |   |\n");
+					hangman.append("   |   0 \n");
+					hangman.append("   |  _|_\n");
+					hangman.append("   |   |   \n");
+					hangman.append("   |  /  \n");
+					hangman.append(" __|__  \n");
+					hangman.append("\n");
+					response.setText("Wrong!");
+				} else if (counter == 6) {
+					hangman.setText(null);
+					hangman.append("    ___\n");
+					hangman.append("   |   |\n");
+					hangman.append("   |   0 \n");
+					hangman.append("   |  _|_\n");
+					hangman.append("   |   |   \n");
+					hangman.append("   |  / \\\n");
+					hangman.append(" __|__  \n");
+					hangman.append("\n");
+					response.setText("Wrong!");
+				}else {
+					enter.setEnabled(false);
+					response.setText("You Lost");
+				}
+				
+				incorrectLetter = false;
+			}
+
 		}
 	}
 }
+
