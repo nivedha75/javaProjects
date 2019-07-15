@@ -2,8 +2,14 @@ package RestaurantCentral;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import oracle.jdbc.pool.OracleDataSource;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.imageio.ImageIO;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,8 +35,30 @@ class Order {
 		orderNumber = ++lastAssignedNum;
 	}
 
-	void placeOrder() {
-		// insert
+	void placeOrder(ArrayList<Order> orderList) throws SQLException {
+		// ArrayList<Order> tempList = orderList;
+		OracleDataSource ods = new OracleDataSource();
+		ods.setURL("jdbc:oracle:thin:@//localhost:1521/XE");
+		// jdbc:oracle:thin@//[hostname]:[port]/[DB service name]
+		ods.setUser("SYSTEM"); // [username]
+		ods.setPassword("javajuice"); // [password]
+		Connection conn = ods.getConnection();
+
+		// Order tempOrderObj = orderList.get(i);
+		// String sql = "insert into ORDERHISTORY
+		// (orderNumber,TELEPHONENUM,foodOrdered,Quantity,PRICE) values (?, ?,?,?,?)";
+		String sql = "insert into ORDERHISTORY (orderNumber,TELEPHONENUM,foodOrdered,Quantity,PRICE) values (?, ?,?,?,?)";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		boolean flag;
+		for (Order i : orderList) {
+			pstmt.setInt(1, i.orderNumber);
+			// pstmt.setString(2, i.telephoneNum);
+			pstmt.setString(2, "123456789");
+			pstmt.setString(3, i.foodOrdered);
+			pstmt.setInt(4, i.quantity);
+			pstmt.setDouble(5, i.price);
+			flag = pstmt.execute();
+		}
 	}
 
 	void addToCart(String telephoneNum, String foodOrdered, int quantity, double price) {
@@ -56,10 +84,6 @@ class Customer {
 
 	public Customer() {
 		customerID = ++lastAssignedNum;
-	}
-
-	void placeOrder() {
-
 	}
 
 	void Pay() {
@@ -182,6 +206,10 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JLabel pizza2;
 	static JLabel pizza3;
 	static JLabel pizza4;
+	static JTextArea pizza1Description;
+	static JTextArea pizza2Description;
+	static JTextArea pizza3Description;
+	static JTextArea pizza4Description;
 
 	// reservations page
 	static JFrame reservationFrame;
@@ -201,6 +229,13 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 		customerObj = new Customer();
 
+		mainPage();
+		pizzaPage();
+		reservationsPage();
+
+	}
+
+	void mainPage() {
 		// ***MAIN PAGE***//
 
 		// title button
@@ -293,7 +328,9 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		frame.setVisible(true);
 		frame.setLocationRelativeTo(null);
 		frame.add(layeredPane);
+	}
 
+	void pizzaPage() {
 		// ***PIZZA***//
 		pizzaTitle = new JLabel("Pizza");
 		orderPizzaButton1 = new JButton("Add to Cart");
@@ -312,6 +349,12 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pizza2 = new JLabel("Italian Supreme");
 		pizza3 = new JLabel("Garden Party");
 		pizza4 = new JLabel("Create Your Own");
+		pizza1Description = new JTextArea(
+				"TOMATOES, MUSHROOMS, \nGREEN PEPPERS, \nONIONS, BLACK OLIVES \nON ZESTY RED SAUCE");
+		pizza2Description = new JTextArea(
+				"ARTICHOKE HEARTS, ZUCCHINI, \nSPINACH, MUSHROOMS, \nTOMATOES, GARLIC, RED & \nGREEN ONIONS ON OUR CREAMY \nGARLIC SAUCE");
+		pizza3Description = new JTextArea("MUSHROOMS, GREEN PEPPERS, \nONIONS, BLACK OLIVES ON \nZESTY RED SAUCE");
+		pizza4Description = new JTextArea("CREATE YOUR OWN PIZZA \nWITH OUR \nNEVERENDING OPTIONS");
 
 		// set location here
 		pizzaTitle.setBounds(870, 120, 200, 100);
@@ -325,6 +368,11 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pizza3.setBounds(80, 650, 400, 100);
 		pizza4.setBounds(1030, 650, 400, 100);
 
+		pizza1Description.setBounds(80, 320, 350, 100);
+		pizza2Description.setBounds(1030, 320, 350, 100);
+		pizza3Description.setBounds(80, 760, 350, 100);
+		pizza4Description.setBounds(1030, 760, 350, 100);
+
 		// set font here
 		pizzaTitle.setFont(new Font("Arial", Font.ITALIC, 45));
 		orderPizzaButton1.setFont(new Font("Bittermilk", Font.BOLD, 30));
@@ -335,6 +383,10 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pizza2.setFont(new Font("Bittermilk", Font.BOLD, 50));
 		pizza3.setFont(new Font("Bittermilk", Font.BOLD, 50));
 		pizza4.setFont(new Font("Bittermilk", Font.BOLD, 50));
+		pizza1Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pizza2Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pizza3Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pizza4Description.setFont(new Font("Arial", Font.PLAIN, 20));
 
 		pizzaPicLabel = new JLabel();
 		pizzaPicLabel.setIcon(new ImageIcon("C:/SavedPictures/PizzaMain.jpg"));
@@ -352,6 +404,10 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpPizza.add(pizza2, new Integer(100));
 		lpPizza.add(pizza3, new Integer(100));
 		lpPizza.add(pizza4, new Integer(100));
+		lpPizza.add(pizza1Description, new Integer(100));
+		lpPizza.add(pizza2Description, new Integer(100));
+		lpPizza.add(pizza3Description, new Integer(100));
+		lpPizza.add(pizza4Description, new Integer(100));
 
 		framePizza = new JFrame();
 		framePizza.add(lpPizza);
@@ -361,7 +417,9 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		framePizza.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		framePizza.setVisible(false);
 		framePizza.setLocationRelativeTo(null);
+	}
 
+	void reservationsPage() {
 		// ***RESERVATIONS PAGE***//
 
 		// create components
@@ -380,6 +438,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		// reservationPanel.addBorder( new EmptyBorder(10, 10, 10, 10) );
 		// reservationPanel.add(cbNumPeople, constraints);
 		cbDay.setBounds(550, 550, 800, 50);
+		// 9999
 		cbTimeSlot.setBounds(550, 650, 800, 50);
 		// cbNumPeople.setSize(200, 200);
 		reservationTitle.setBounds(570, 250, 800, 200);
@@ -494,22 +553,35 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		// Add order to Arraylist to store info in memory
-		if (e.getSource() == orderPizzaButton1) {
-			tempOrderObj = new Order();
-			tempOrderObj.addToCart(customerObj.phoneNumber, pizza1.getText(), 1, 15.00);
-			orderList.add(tempOrderObj);
-		} else if (e.getSource() == orderPizzaButton2) {
-			tempOrderObj = new Order();
-			tempOrderObj.addToCart(customerObj.phoneNumber, pizza2.getText(), 1, 14.00);
-			orderList.add(tempOrderObj);
-		} else if (e.getSource() == orderPizzaButton3) {
-			tempOrderObj = new Order();
-			tempOrderObj.addToCart(customerObj.phoneNumber, pizza3.getText(), 1, 16.00);
-			orderList.add(tempOrderObj);
-		} else if (e.getSource() == orderPizzaButton4) {
+		try {
+			if (e.getSource() == orderPizzaButton1) {
+				tempOrderObj = new Order();
+				tempOrderObj.addToCart(customerObj.phoneNumber, pizza1.getText(), 1, 15.00);
+				orderList.add(tempOrderObj);
+				System.out.println("added to Cart");
+				tempOrderObj.placeOrder(orderList);
+				System.out.println("Order is placed");
+			} else if (e.getSource() == orderPizzaButton2) {
+				tempOrderObj = new Order();
+				tempOrderObj.addToCart(customerObj.phoneNumber, pizza2.getText(), 1, 14.00);
+				orderList.add(tempOrderObj);
+				System.out.println("added to Cart");
+				tempOrderObj.placeOrder(orderList);
+				System.out.println("Order is placed");
+			} else if (e.getSource() == orderPizzaButton3) {
+				tempOrderObj = new Order();
+				tempOrderObj.addToCart(customerObj.phoneNumber, pizza3.getText(), 1, 16.00);
+				orderList.add(tempOrderObj);
+				System.out.println("added to Cart");
+				tempOrderObj.placeOrder(orderList);
+				System.out.println("Order is placed");
+			} else if (e.getSource() == orderPizzaButton4) {
+
+			}
+		} catch (SQLException s1) {
+			System.out.println(s1.getMessage());
 
 		}
-
 //		//add this where I display shopping cart
 //		double sum = 0.0;
 //		for (Order i : orderList) {
