@@ -67,6 +67,16 @@ class Order {
 		this.quantity = quantity;
 		this.price = price;
 	}
+	
+	void displayOrder(ArrayList<Order> orderList) {
+		RestaurantProject.taCart = new JTextArea();
+		RestaurantProject.taCart.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		//static JLabel headings = new JLabel("Food & Beverages \t \t Quantity \t Price");
+		for(Order i: orderList) {
+			RestaurantProject.taCart.append(i.foodOrdered + "\t \t" + i.quantity + "\t" + i.price);
+			RestaurantProject.taCart.append("__________________________________________________________________________________________");
+		}
+	}
 }
 
 class Customer {
@@ -174,7 +184,10 @@ class Seating {
 public class RestaurantProject extends JFrame implements ActionListener {
 	Order tempOrderObj;
 	Customer customerObj;
-
+	
+	//order
+	static JTextArea taCart;
+	
 	// main page
 	static JFrame frame;
 	static JLayeredPane layeredPane;
@@ -210,6 +223,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JTextArea pizza2Description;
 	static JTextArea pizza3Description;
 	static JTextArea pizza4Description;
+	static JButton JavaDinerButtonPizza;
 
 	// reservations page
 	static JFrame reservationFrame;
@@ -332,6 +346,15 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 	void pizzaPage() {
 		// ***PIZZA***//
+		
+		JavaDinerButtonPizza = new JButton();
+		JavaDinerButtonPizza.addActionListener(this);
+		JavaDinerButtonPizza.setBounds(720, 30, 450, 110);
+		JavaDinerButtonPizza.setBorderPainted(false);
+		JavaDinerButtonPizza.setContentAreaFilled(false);
+		JavaDinerButtonPizza.setToolTipText("Return to main page");
+		
+		
 		pizzaTitle = new JLabel("Pizza");
 		orderPizzaButton1 = new JButton("Add to Cart");
 		orderPizzaButton1.addActionListener(this);
@@ -395,6 +418,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpPizza = new JLayeredPane();
 		lpPizza.setPreferredSize(new Dimension(1920, 1080));
 		lpPizza.add(pizzaPicLabel, new Integer(50));
+		lpPizza.add(JavaDinerButtonPizza, new Integer(100));
 		lpPizza.add(pizzaTitle, new Integer(100));
 		lpPizza.add(orderPizzaButton1, new Integer(100));
 		lpPizza.add(orderPizzaButton2, new Integer(100));
@@ -537,6 +561,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
+		
 		if (s == "Pizza") {
 			// String foodCategoryChosen = (String)cbMenu.getSelectedItem();
 			framePizza.setVisible(true);
@@ -550,7 +575,12 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		} else if (s == "Beverage") {
 			frame.setVisible(false);
 		}
-
+		
+		if(e.getSource() == JavaDinerButtonPizza) {
+			frame.setVisible(true);
+			framePizza.setVisible(false);
+		}
+		
 		ArrayList<Order> orderList = new ArrayList<Order>();
 		// Add order to Arraylist to store info in memory
 		try {
@@ -601,6 +631,8 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		if (e.getSource() == findButton) {
 			reservationFrame.setVisible(false);
 		}
+		
 	}
+	
 
 }
