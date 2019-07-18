@@ -18,6 +18,7 @@ import java.awt.GridLayout;
 import java.awt.event.*;
 import java.awt.Toolkit;
 import java.awt.Dimension;
+import java.text.NumberFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -929,12 +930,12 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		int count = 0;
 		if (e.getSource() == findButton) {
 			try {
-				// static void findTable(String dateOfReservation, String timeSlot ) throws
+				//static void findTable(String dateOfReservation, String timeSlot ) throws
 				// SQLException {
-				count = Reservation.findTable();
-				System.out.println("DEBUG :count :" + count);
-				if (count == 0) {
-					System.out.println("Sorry, please select a different date as it is fully booked ");
+				count = Reservation.findTable(dateOfReservation,timeSlot);
+				System.out.println("DEBUG :count inside main program :" + count);
+				if (count == 0 || (Integer.parseInt(numOfPeople) > count)) {
+					System.out.println("please select a different date / timeslot as it is fully booked ");
 				} else {
 					reservationFrame2.setVisible(true);
 					reservationFrame.setVisible(false);
