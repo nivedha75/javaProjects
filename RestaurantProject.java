@@ -21,173 +21,16 @@ import java.awt.Dimension;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-//class order represents order details 
-class Order {
-	int orderNumber;
-	String telephoneNum;
-	String foodOrdered;
-	int quantity;
-	double price;
-	static int lastAssignedNum;
-
-	public Order() {
-		orderNumber = ++lastAssignedNum;
-	}
-
-	void placeOrder(ArrayList<Order> orderList) throws SQLException {
-		// ArrayList<Order> tempList = orderList;
-		OracleDataSource ods = new OracleDataSource();
-		ods.setURL("jdbc:oracle:thin:@//localhost:1521/XE");
-		// jdbc:oracle:thin@//[hostname]:[port]/[DB service name]
-		ods.setUser("SYSTEM"); // [username]
-		ods.setPassword("javajuice"); // [password]
-		Connection conn = ods.getConnection();
-
-		// Order tempOrderObj = orderList.get(i);
-		// String sql = "insert into ORDERHISTORY
-		// (orderNumber,TELEPHONENUM,foodOrdered,Quantity,PRICE) values (?, ?,?,?,?)";
-		String sql = "insert into ORDERHISTORY (orderNumber,TELEPHONENUM,foodOrdered,Quantity,PRICE) values (?, ?,?,?,?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		boolean flag;
-		for (Order i : orderList) {
-			pstmt.setInt(1, i.orderNumber);
-			// pstmt.setString(2, i.telephoneNum);
-			pstmt.setString(2, "123456789");
-			pstmt.setString(3, i.foodOrdered);
-			pstmt.setInt(4, i.quantity);
-			pstmt.setDouble(5, i.price);
-			flag = pstmt.execute();
-		}
-	}
-
-	void addToCart(String telephoneNum, String foodOrdered, int quantity, double price) {
-		this.telephoneNum = telephoneNum;
-		this.foodOrdered = foodOrdered;
-		this.quantity = quantity;
-		this.price = price;
-	}
-	
-	void displayOrder(ArrayList<Order> orderList) {
-		RestaurantProject.taCart = new JTextArea();
-		RestaurantProject.taCart.setFont(new Font("Bittermilk", Font.BOLD, 30));
-		//static JLabel headings = new JLabel("Food & Beverages \t \t Quantity \t Price");
-		for(Order i: orderList) {
-			RestaurantProject.taCart.append(i.foodOrdered + "\t \t" + i.quantity + "\t" + i.price);
-			RestaurantProject.taCart.append("__________________________________________________________________________________________");
-		}
-	}
-}
-
-class Customer {
-
-	String name;
-	String phoneNumber;
-	String streetAddress;
-	String city;
-	String state;
-	String zip;
-	// String username;
-	// String password;
-	int customerID;
-	static int lastAssignedNum;
-
-	public Customer() {
-		customerID = ++lastAssignedNum;
-	}
-
-	void Pay() {
-
-	}
-}
-
-class Food {
-	String category;
-	String name;
-	double price;
-
-}
-
-class Beverage extends Food {
-	String size;
-
-	public Beverage() {
-		category = "beverage";
-	}
-
-}
-
-class Pizza extends Food {
-	String pizzaType;// create your own or premade
-	String size;
-	String crust;
-	String[][] toppings = new String[11][2];
-	// red bellpeppers
-	// green bellpeppers
-	// mushrooms
-	// pineapple
-	// spinach
-	// onion
-	// olives
-	// jalepeno
-	// zuchinni
-	// artichoke
-	// black olives
-
-	public Pizza() {
-		category = "Pizza";
-	}
-
-}
-
-class Salad extends Food {
-
-	public Salad() {
-		category = "Salad";
-
-	}
-}
-
-class Pasta extends Food {
-	String pastaType;
-	String sauce;
-	String type;
-	String cheese;
-	String[][] vegetables = new String[7][2];
-
-	public Pasta() {
-		category = "Pasta";
-	}
-
-}
-
-class Dessert extends Food {
-
-	public Dessert() {
-		category = "Dessert";
-	}
-}
-
-class Paying {
-	double overallPrice;
-	double tip;
-
-	void calculateOverallPrice(double pizzaCost, double pastaCost) {
-		// overallPrice =
-	}
-}
-
-class Seating {
-
-}
+import java.lang.Object.*;
+//import javafx.scene.control.DatePicker;
 
 public class RestaurantProject extends JFrame implements ActionListener {
 	Order tempOrderObj;
-	Customer customerObj;
-	
-	//order
-	static JTextArea taCart;
-	
+	Customer tempCustomerObj;
+
+	ArrayList<Order> orderList = new ArrayList<Order>();
+	// ArrayList<Customer> customerList = new ArrayList<Customer>();
+
 	// main page
 	static JFrame frame;
 	static JLayeredPane layeredPane;
@@ -224,6 +67,32 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JTextArea pizza3Description;
 	static JTextArea pizza4Description;
 	static JButton JavaDinerButtonPizza;
+	static JLabel pizza1Price;
+	static JLabel pizza2Price;
+	static JLabel pizza3Price;
+
+	// pasta page
+	static JFrame framePasta;
+	static JLayeredPane lpPasta;
+	static JLabel pastaTitle;
+	static JLabel pastaPicLabel;
+	static JButton orderPastaButton1;
+	static JButton orderPastaButton2;
+	static JButton orderPastaButton3;
+	static JButton orderPastaButton4;
+	static JLabel pasta1;
+	static JLabel pasta2;
+	static JLabel pasta3;
+	static JLabel pasta4;
+	static JTextArea pasta1Description;
+	static JTextArea pasta2Description;
+	static JTextArea pasta3Description;
+	static JTextArea pasta4Description;
+	static JButton JavaDinerButtonPasta;
+	static JLabel pasta1Price;
+	static JLabel pasta2Price;
+	static JLabel pasta3Price;
+	static JLabel pasta4Price;
 
 	// reservations page
 	static JFrame reservationFrame;
@@ -234,6 +103,47 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JComboBox cbDay;
 	static JComboBox cbTimeSlot;
 	static JButton findButton;
+	static JButton exit;
+
+	// reservations page 2
+	static JFrame reservationFrame2;
+	static JTextField tfNameR;
+	static JTextField tfTelephoneNumR;
+	static JLabel reservationLabel2;
+	static JLayeredPane lpReservation2;
+	static JLabel labelNameR;
+	static JLabel labelTelephoneNumR;
+	static JButton confirmReservationButton;
+
+	// Cart page
+	static JFrame cartFrame;
+	static JLayeredPane lpCart;
+	static JLabel cartLabel;
+	static JButton checkoutButton;
+	static JButton backToShoppingButton;
+	static JTextArea taCart;
+	static JTextArea totalCost;
+	static JScrollPane spItems;
+
+	// Delivery or Carry Out Page
+	static JFrame choiceFrame;
+	static JLayeredPane lpChoice;
+	static JLabel choiceLabel;
+	static JButton deliveryButton;
+	static JButton carryoutButton;
+	static JButton placeOrderButton;
+	static JLabel name;
+	static JLabel telephoneNum;
+	static JLabel address;
+	static JLabel city;
+	static JLabel zip;
+	static JTextField tfName;
+	static JTextField tfTelephoneNum;
+	static JTextField tfAddress;
+	static JTextField tfCity;
+	static JTextField tfZip;
+	static JLabel result;
+	static JButton goBackToCartButton;
 
 	public static void main(String[] args) {
 		new RestaurantProject();
@@ -241,11 +151,15 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 	public RestaurantProject() {
 
-		customerObj = new Customer();
+		tempCustomerObj = new Customer();
 
 		mainPage();
 		pizzaPage();
+		pastaPage();
 		reservationsPage();
+		reservationsPage2();
+		CartPage();
+		DeliveryOrCarryoutPage();
 
 	}
 
@@ -346,15 +260,14 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 	void pizzaPage() {
 		// ***PIZZA***//
-		
+
 		JavaDinerButtonPizza = new JButton();
 		JavaDinerButtonPizza.addActionListener(this);
 		JavaDinerButtonPizza.setBounds(720, 30, 450, 110);
 		JavaDinerButtonPizza.setBorderPainted(false);
 		JavaDinerButtonPizza.setContentAreaFilled(false);
 		JavaDinerButtonPizza.setToolTipText("Return to main page");
-		
-		
+
 		pizzaTitle = new JLabel("Pizza");
 		orderPizzaButton1 = new JButton("Add to Cart");
 		orderPizzaButton1.addActionListener(this);
@@ -378,13 +291,16 @@ public class RestaurantProject extends JFrame implements ActionListener {
 				"ARTICHOKE HEARTS, ZUCCHINI, \nSPINACH, MUSHROOMS, \nTOMATOES, GARLIC, RED & \nGREEN ONIONS ON OUR CREAMY \nGARLIC SAUCE");
 		pizza3Description = new JTextArea("MUSHROOMS, GREEN PEPPERS, \nONIONS, BLACK OLIVES ON \nZESTY RED SAUCE");
 		pizza4Description = new JTextArea("CREATE YOUR OWN PIZZA \nWITH OUR \nNEVERENDING OPTIONS");
+		pizza1Price = new JLabel("$12.00");
+		pizza2Price = new JLabel("$11.50");
+		pizza3Price = new JLabel("$10.00");
 
 		// set location here
 		pizzaTitle.setBounds(870, 120, 200, 100);
-		orderPizzaButton1.setBounds(120, 450, 200, 40);
-		orderPizzaButton2.setBounds(1100, 450, 200, 40);
-		orderPizzaButton3.setBounds(120, 900, 200, 40);
-		orderPizzaButton4.setBounds(1100, 900, 200, 40);
+		orderPizzaButton1.setBounds(120, 500, 200, 40);
+		orderPizzaButton2.setBounds(1100, 500, 200, 40);
+		orderPizzaButton3.setBounds(120, 950, 200, 40);
+		orderPizzaButton4.setBounds(1100, 950, 200, 40);
 
 		pizza1.setBounds(80, 210, 400, 100);
 		pizza2.setBounds(1030, 210, 400, 100);
@@ -395,6 +311,10 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pizza2Description.setBounds(1030, 320, 350, 100);
 		pizza3Description.setBounds(80, 760, 350, 100);
 		pizza4Description.setBounds(1030, 760, 350, 100);
+
+		pizza1Price.setBounds(80, 420, 200, 100);
+		pizza2Price.setBounds(1030, 420, 200, 100);
+		pizza3Price.setBounds(80, 860, 200, 100);
 
 		// set font here
 		pizzaTitle.setFont(new Font("Arial", Font.ITALIC, 45));
@@ -410,6 +330,9 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pizza2Description.setFont(new Font("Arial", Font.PLAIN, 20));
 		pizza3Description.setFont(new Font("Arial", Font.PLAIN, 20));
 		pizza4Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pizza1Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pizza2Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pizza3Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
 
 		pizzaPicLabel = new JLabel();
 		pizzaPicLabel.setIcon(new ImageIcon("C:/SavedPictures/PizzaMain.jpg"));
@@ -432,6 +355,9 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpPizza.add(pizza2Description, new Integer(100));
 		lpPizza.add(pizza3Description, new Integer(100));
 		lpPizza.add(pizza4Description, new Integer(100));
+		lpPizza.add(pizza1Price, new Integer(100));
+		lpPizza.add(pizza2Price, new Integer(100));
+		lpPizza.add(pizza3Price, new Integer(100));
 
 		framePizza = new JFrame();
 		framePizza.add(lpPizza);
@@ -443,10 +369,134 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		framePizza.setLocationRelativeTo(null);
 	}
 
+	void pastaPage() {
+		// ***PASTA***//
+
+		JavaDinerButtonPasta = new JButton();
+		JavaDinerButtonPasta.addActionListener(this);
+		JavaDinerButtonPasta.setBounds(720, 30, 450, 110);
+		JavaDinerButtonPasta.setBorderPainted(false);
+		JavaDinerButtonPasta.setContentAreaFilled(false);
+		JavaDinerButtonPasta.setToolTipText("Return to main page");
+
+		pastaTitle = new JLabel("Pasta");
+		orderPastaButton1 = new JButton("Add to Cart");
+		orderPastaButton1.addActionListener(this);
+		orderPastaButton1.setToolTipText("Add to Cart");
+		orderPastaButton2 = new JButton("Add to Cart");
+		orderPastaButton2.addActionListener(this);
+		orderPastaButton2.setToolTipText("Add to Cart");
+		orderPastaButton3 = new JButton("Add to Cart");
+		orderPastaButton3.addActionListener(this);
+		orderPastaButton3.setToolTipText("Add to Cart");
+		orderPastaButton4 = new JButton("Add to Cart");
+		orderPastaButton4.addActionListener(this);
+		orderPastaButton4.setToolTipText("Customize");
+		pasta1 = new JLabel("Fettuccini Alfredo");
+		pasta2 = new JLabel("Creamy Tomato Basil Rigatoni");
+		pasta3 = new JLabel("Fettuccini with Mariana Sauce");
+		pasta4 = new JLabel("Four Cheese Penne");
+		pasta1Description = new JTextArea("TRY OUR FETTUCCINE PASTA\nTOSSED IN A RICH AND\nCREAMY ALFREDO SAUCE");
+		pasta2Description = new JTextArea("RIGATONI COATED IN A DELICIOUS,\nCREAMY TOMATO SAUCE WITH\nFRESH BASIL");
+		pasta3Description = new JTextArea("FETTUCCINE SOAKED IN A RICH\nMARIANA SAUCE MADE WITH FRESH\nTOMATOES");
+		pasta4Description = new JTextArea(
+				"PENNE DIPPED IN A MIXTURE OF\nFOUR CHEESES AND BAKED:\nRICOTTA, MOZERELLA, COTTAGE,\nAND PARMESAN");
+		pasta1Price = new JLabel("$12.00");
+		pasta2Price = new JLabel("$11.50");
+		pasta3Price = new JLabel("$10.00");
+		pasta4Price = new JLabel("$10.00");
+
+		// set location here
+		pastaTitle.setBounds(870, 120, 200, 100);
+		orderPastaButton1.setBounds(120, 500, 200, 40);
+		orderPastaButton2.setBounds(1100, 500, 200, 40);
+		orderPastaButton3.setBounds(120, 950, 200, 40);
+		orderPastaButton4.setBounds(1100, 950, 200, 40);
+
+		pasta1.setBounds(80, 210, 400, 100);
+		pasta2.setBounds(1030, 210, 600, 100);
+		pasta3.setBounds(80, 650, 600, 100);
+		pasta4.setBounds(1030, 650, 400, 100);
+
+		pasta1Description.setBounds(80, 320, 350, 100);
+		pasta2Description.setBounds(1030, 320, 350, 100);
+		pasta3Description.setBounds(80, 760, 350, 100);
+		pasta4Description.setBounds(1030, 760, 350, 100);
+
+		pasta1Price.setBounds(80, 420, 300, 100);
+		pasta2Price.setBounds(1030, 420, 400, 100);
+		pasta3Price.setBounds(80, 860, 300, 100);
+		pasta4Price.setBounds(1030, 860, 300, 100);
+
+		// set font here
+		pastaTitle.setFont(new Font("Arial", Font.ITALIC, 45));
+		orderPastaButton1.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		orderPastaButton2.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		orderPastaButton3.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		orderPastaButton4.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta1.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta2.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta3.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta4.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta1Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pasta2Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pasta3Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pasta4Description.setFont(new Font("Arial", Font.PLAIN, 20));
+		pasta1Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta2Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta3Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pasta4Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
+
+		pastaPicLabel = new JLabel();
+		pastaPicLabel.setIcon(new ImageIcon("C:/SavedPictures/PastaMain.jpg"));
+		pastaPicLabel.setBounds(0, 0, 1920, 1080);
+
+		lpPasta = new JLayeredPane();
+		lpPasta.setPreferredSize(new Dimension(1920, 1080));
+		lpPasta.add(pastaPicLabel, new Integer(50));
+		lpPasta.add(JavaDinerButtonPasta, new Integer(100));
+		lpPasta.add(pastaTitle, new Integer(100));
+		lpPasta.add(orderPastaButton1, new Integer(100));
+		lpPasta.add(orderPastaButton2, new Integer(100));
+		lpPasta.add(orderPastaButton3, new Integer(100));
+		lpPasta.add(orderPastaButton4, new Integer(100));
+		lpPasta.add(pasta1, new Integer(100));
+		lpPasta.add(pasta2, new Integer(100));
+		lpPasta.add(pasta3, new Integer(100));
+		lpPasta.add(pasta4, new Integer(100));
+		lpPasta.add(pasta1Description, new Integer(100));
+		lpPasta.add(pasta2Description, new Integer(100));
+		lpPasta.add(pasta3Description, new Integer(100));
+		lpPasta.add(pasta4Description, new Integer(100));
+		lpPasta.add(pasta1Price, new Integer(100));
+		lpPasta.add(pasta2Price, new Integer(100));
+		lpPasta.add(pasta3Price, new Integer(100));
+		lpPasta.add(pasta4Price, new Integer(100));
+
+		framePasta = new JFrame();
+		framePasta.add(lpPasta);
+		framePasta.setSize(1920, 1080);
+		framePasta.setResizable(false);
+		framePasta.setTitle("pasta");
+		framePasta.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		framePasta.setVisible(false);
+		framePasta.setLocationRelativeTo(null);
+	}
+
 	void reservationsPage() {
 		// ***RESERVATIONS PAGE***//
 
+		/*
+		 * UtilDateModel model = new UtilDateModel(); JDatePanelImpl datePanel = new
+		 * JDatePanelImpl(model); JDatePickerImpl datePicker = new
+		 * JDatePickerImpl(datePanel);
+		 */
+
 		// create components
+		exit = new JButton("X");
+		exit.setFont(new Font("Arial", Font.PLAIN, 40));
+		exit.setBorderPainted(false);
+		exit.addActionListener(this);
 		cbNumPeople = new JComboBox();
 		cbDay = new JComboBox();
 		cbTimeSlot = new JComboBox();
@@ -458,6 +508,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		findButton.setToolTipText("Find a Table");
 
 		// set location here
+		exit.setBounds(1820, 0, 100, 100);
 		cbNumPeople.setBounds(550, 450, 800, 50);
 		// reservationPanel.addBorder( new EmptyBorder(10, 10, 10, 10) );
 		// reservationPanel.add(cbNumPeople, constraints);
@@ -466,7 +517,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		cbTimeSlot.setBounds(550, 650, 800, 50);
 		// cbNumPeople.setSize(200, 200);
 		reservationTitle.setBounds(570, 250, 800, 200);
-		findButton.setBounds(730, 820, 400, 100);
+		findButton.setBounds(730, 780, 400, 100);
 
 		// set font here
 		cbNumPeople.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -476,42 +527,43 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 		// add to combo box
 		cbNumPeople.addItem("Number Of People");
-		cbDay.addItem("Date");
+		cbDay.addItem("Day");
 		cbTimeSlot.addItem("Time");
 
-		cbNumPeople.addItem("1 Person");
-		cbNumPeople.addItem("2 People");
-		cbNumPeople.addItem("3 People");
-		cbNumPeople.addItem("4 People");
-		cbNumPeople.addItem("5 People");
-		cbNumPeople.addItem("6 People");
-		cbNumPeople.addItem("7 People");
-		cbNumPeople.addItem("8+ People");
-		cbDay.addItem("Calendar");
-		cbTimeSlot.addItem("12:00");
-		cbTimeSlot.addItem("12:30");
-		cbTimeSlot.addItem("1:00");
-		cbTimeSlot.addItem("1:30");
-		cbTimeSlot.addItem("2:00");
-		cbTimeSlot.addItem("2:30");
-		cbTimeSlot.addItem("3:00");
-		cbTimeSlot.addItem("3:30");
-		cbTimeSlot.addItem("4:00");
-		cbTimeSlot.addItem("4:30");
-		cbTimeSlot.addItem("5:00");
-		cbTimeSlot.addItem("5:30");
-		cbTimeSlot.addItem("6:00");
-		cbTimeSlot.addItem("6:30");
-		cbTimeSlot.addItem("7:00");
-		cbTimeSlot.addItem("7:30");
-		cbTimeSlot.addItem("8:00");
-		cbTimeSlot.addItem("8:30");
-		cbTimeSlot.addItem("9:00");
-		cbTimeSlot.addItem("9:30");
-		cbTimeSlot.addItem("10:00");
-		cbTimeSlot.addItem("10:30");
-		cbTimeSlot.addItem("11:00");
-		cbTimeSlot.addItem("11:30");
+		cbNumPeople.addItem("1");
+		cbNumPeople.addItem("2");
+		cbNumPeople.addItem("3");
+		cbNumPeople.addItem("4");
+		cbNumPeople.addItem("5");
+		cbNumPeople.addItem("6");
+		cbNumPeople.addItem("7");
+		cbNumPeople.addItem("8");
+		cbDay.addItem("7/19");
+		cbDay.addItem("7/20");
+		cbDay.addItem("7/21");
+		cbDay.addItem("7/22");
+		cbDay.addItem("7/23");
+		cbDay.addItem("7/24");
+		cbDay.addItem("7/25");
+		cbTimeSlot.addItem("12:00 PM");
+		cbTimeSlot.addItem("12:30 PM");
+		cbTimeSlot.addItem("1:00 PM");
+		cbTimeSlot.addItem("1:30 PM");
+		cbTimeSlot.addItem("2:00 PM");
+		cbTimeSlot.addItem("2:30 PM");
+		cbTimeSlot.addItem("3:00 PM");
+		cbTimeSlot.addItem("3:30 PM");
+		cbTimeSlot.addItem("4:00 PM");
+		cbTimeSlot.addItem("4:30 PM");
+		cbTimeSlot.addItem("5:00 PM");
+		cbTimeSlot.addItem("5:30 PM");
+		cbTimeSlot.addItem("6:00 PM");
+		cbTimeSlot.addItem("6:30 PM");
+		cbTimeSlot.addItem("7:00 PM");
+		cbTimeSlot.addItem("7:30 PM");
+		cbTimeSlot.addItem("8:00 PM");
+		cbTimeSlot.addItem("8:30 PM");
+		cbTimeSlot.addItem("9:00 PM");
 
 		// reservationPanel.setLayout(new GridLayout(3, 1));
 		// reservationPanel.setBounds(700, 25, 400, 500);
@@ -531,6 +583,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpReservation.add(cbNumPeople, new Integer(100));
 		lpReservation.add(cbDay, new Integer(100));
 		lpReservation.add(cbTimeSlot, new Integer(100));
+		lpReservation.add(exit, new Integer(100));
 
 		// reservation frame
 		reservationFrame = new JFrame();
@@ -542,6 +595,222 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		/// reservationLabel.setSize(1920, 1080);
 		reservationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		reservationFrame.setResizable(false);
+
+	}
+
+	public void reservationsPage2() {
+		confirmReservationButton = new JButton();
+		confirmReservationButton.setBounds(600, 790, 650, 120);
+		confirmReservationButton.setBorderPainted(false);
+		confirmReservationButton.setContentAreaFilled(false);
+		confirmReservationButton.addActionListener(this);
+
+		labelNameR = new JLabel("Name");
+		labelNameR.setBounds(120, 400, 200, 50);
+		labelNameR.setFont(new Font("Bittermilk", Font.PLAIN, 30));
+
+		tfNameR = new JTextField();
+		tfNameR.setBounds(120, 450, 400, 50);
+		tfNameR.setFont(new Font("Bittermilk", Font.PLAIN, 30));
+
+		labelTelephoneNumR = new JLabel("Telephone #");
+		labelTelephoneNumR.setBounds(120, 500, 200, 50);
+		labelTelephoneNumR.setFont(new Font("Bittermilk", Font.PLAIN, 30));
+
+		tfTelephoneNumR = new JTextField();
+		tfTelephoneNumR.setBounds(120, 550, 400, 50);
+		tfTelephoneNumR.setFont(new Font("Bittermilk", Font.PLAIN, 30));
+
+		reservationLabel2 = new JLabel();
+		reservationLabel2.setIcon(new ImageIcon("C:/SavedPictures/reservationPage2.jpg"));
+		reservationLabel2.setBounds(0, 0, 1920, 1080);
+
+		lpReservation2 = new JLayeredPane();
+		lpReservation2.setPreferredSize(new Dimension(1920, 1080));
+		lpReservation2.add(reservationLabel2, new Integer(50));
+		lpReservation2.add(tfNameR, new Integer(100));
+		lpReservation2.add(tfTelephoneNumR, new Integer(100));
+		lpReservation2.add(labelNameR, new Integer(100));
+		lpReservation2.add(labelTelephoneNumR, new Integer(100));
+		lpReservation2.add(confirmReservationButton, new Integer(100));
+
+		reservationFrame2 = new JFrame();
+		reservationFrame2.add(lpReservation2);
+		// reservationFrame.add(reservationPanel);
+		reservationFrame2.setVisible(false);
+		reservationFrame2.setSize(1920, 1080);
+		reservationFrame2.setTitle("Reservations");
+		/// reservationLabel.setSize(1920, 1080);
+		reservationFrame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		reservationFrame2.setResizable(false);
+	}
+
+	public void CartPage() {
+		/*
+		 * RestaurantProject.taCart = new JTextArea();
+		 * RestaurantProject.taCart.setEditable(false);
+		 * RestaurantProject.taCart.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		 * 
+		 * RestaurantProject.totalCost = new JTextArea();
+		 * RestaurantProject.totalCost.setEditable(false);
+		 * RestaurantProject.totalCost.setBounds(1450, 750, 370, 180);
+		 * RestaurantProject.totalCost.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		 * // static JLabel headings = new JLabel("Food & Beverages \t \t Quantity \t //
+		 * Price");
+		 * 
+		 * RestaurantProject.spItems = new JScrollPane(RestaurantProject.taCart);
+		 * RestaurantProject.spItems.setVerticalScrollBarPolicy(ScrollPaneConstants.
+		 * VERTICAL_SCROLLBAR_ALWAYS); RestaurantProject.spItems.setBounds(50, 350,
+		 * 1770, 400);
+		 * 
+		 */
+
+		checkoutButton = new JButton();
+		checkoutButton.addActionListener(this);
+		checkoutButton.setBounds(1565, 930, 350, 120);
+		checkoutButton.setBorderPainted(false);
+		checkoutButton.setContentAreaFilled(false);
+		checkoutButton.setToolTipText("Continue With Order");
+
+		backToShoppingButton = new JButton();
+		backToShoppingButton.addActionListener(this);
+		backToShoppingButton.setBounds(65, 930, 700, 120);
+		backToShoppingButton.setBorderPainted(false);
+		backToShoppingButton.setContentAreaFilled(false);
+		backToShoppingButton.setToolTipText("Continue Shopping");
+
+		cartLabel = new JLabel();
+		cartLabel.setIcon(new ImageIcon("C:/SavedPictures/MyOrder.jpg"));
+		cartLabel.setBounds(0, 0, 1920, 1080);
+
+		lpCart = new JLayeredPane();
+		lpCart.setPreferredSize(new Dimension(1920, 1080));
+		lpCart.add(cartLabel, new Integer(50));
+		lpCart.add(checkoutButton, new Integer(100));
+		lpCart.add(backToShoppingButton, new Integer(100));
+
+		cartFrame = new JFrame();
+		cartFrame.add(lpCart);
+		cartFrame.setVisible(false);
+		cartFrame.setSize(1920, 1080);
+		cartFrame.setTitle("My Order");
+		cartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		cartFrame.setResizable(false);
+	}
+
+	public void DeliveryOrCarryoutPage() {
+
+		deliveryButton = new JButton();
+		deliveryButton.addActionListener(this);
+		deliveryButton.setBounds(600, 175, 300, 285);
+		deliveryButton.setBorderPainted(false);
+		deliveryButton.setContentAreaFilled(false);
+		deliveryButton.setToolTipText("Choose Delivery Option");
+		// deliveryButton.ToolTip.font(new Font("Arial", Font.BOLD, 30));
+
+		name = new JLabel("Name");
+		address = new JLabel("Address");
+		city = new JLabel("City");
+		zip = new JLabel("Zip");
+		telephoneNum = new JLabel("Telephone #");
+
+		name.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		address.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		city.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		zip.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		telephoneNum.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+
+		name.setBounds(600, 450, 600, 100);
+		telephoneNum.setBounds(600, 575, 600, 100);
+		address.setBounds(600, 700, 600, 100);
+		city.setBounds(600, 825, 400, 100);
+		zip.setBounds(1050, 825, 100, 100);
+
+		tfName = new JTextField();
+		tfAddress = new JTextField();
+		tfCity = new JTextField();
+		tfZip = new JTextField();
+		tfTelephoneNum = new JTextField();
+
+		tfName.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		tfAddress.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		tfCity.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		tfZip.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+		tfTelephoneNum.setFont(new Font("Bittermilk", Font.PLAIN, 25));
+
+		tfName.setBounds(600, 515, 600, 50);
+		tfTelephoneNum.setBounds(600, 640, 600, 50);
+		tfAddress.setBounds(600, 765, 600, 50);
+		tfCity.setBounds(600, 890, 400, 50);
+		tfZip.setBounds(1050, 890, 150, 50);
+
+		carryoutButton = new JButton();
+		carryoutButton.addActionListener(this);
+		carryoutButton.setBounds(950, 175, 260, 285);
+		carryoutButton.setBorderPainted(false);
+		carryoutButton.setContentAreaFilled(false);
+		carryoutButton.setToolTipText("Choose Carryout Option");
+
+		placeOrderButton = new JButton();
+		placeOrderButton.addActionListener(this);
+		placeOrderButton.setBounds(1405, 510, 420, 130);
+		placeOrderButton.setBorderPainted(false);
+		placeOrderButton.setContentAreaFilled(false);
+		placeOrderButton.setToolTipText("Place Order");
+
+		goBackToCartButton = new JButton();
+		goBackToCartButton.addActionListener(this);
+		goBackToCartButton.setBounds(50, 490, 420, 130);
+		goBackToCartButton.setBorderPainted(false);
+		goBackToCartButton.setContentAreaFilled(false);
+		goBackToCartButton.setToolTipText("Go Back to Cart");
+
+		choiceLabel = new JLabel();
+		choiceLabel.setIcon(new ImageIcon("C:/SavedPictures/DeliveryOrCarryout.jpg"));
+		choiceLabel.setBounds(0, 0, 1920, 1080);
+		
+		result = new JLabel("\nYour order has been placed!");
+		result.setFont(new Font("Arial", Font.PLAIN, 30));
+		result.setBounds(1415, 610, 420, 130);
+		result.setVisible(false);
+
+		lpChoice = new JLayeredPane();
+		lpChoice.setPreferredSize(new Dimension(1920, 1080));
+		lpChoice.add(choiceLabel, new Integer(50));
+		lpChoice.add(deliveryButton, new Integer(100));
+		lpChoice.add(carryoutButton, new Integer(100));
+		lpChoice.add(placeOrderButton, new Integer(100));
+		lpChoice.add(goBackToCartButton, new Integer(100));
+		lpChoice.add(name, new Integer(100));
+		lpChoice.add(telephoneNum, new Integer(100));
+		lpChoice.add(city, new Integer(100));
+		lpChoice.add(address, new Integer(100));
+		lpChoice.add(zip, new Integer(100));
+		lpChoice.add(tfName, new Integer(100));
+		lpChoice.add(tfTelephoneNum, new Integer(100));
+		lpChoice.add(tfCity, new Integer(100));
+		lpChoice.add(tfAddress, new Integer(100));
+		lpChoice.add(tfZip, new Integer(100));
+		lpChoice.add(result, new Integer(100));
+
+		name.setVisible(false);
+		telephoneNum.setVisible(false);
+		city.setVisible(false);
+		address.setVisible(false);
+		zip.setVisible(false);
+		tfName.setVisible(false);
+		tfAddress.setVisible(false);
+		tfCity.setVisible(false);
+		tfZip.setVisible(false);
+		tfTelephoneNum.setVisible(false);
+
+		choiceFrame = new JFrame();
+		choiceFrame.add(lpChoice);
+		choiceFrame.setVisible(false);
+		choiceFrame.setSize(1920, 1080);
+		choiceFrame.setTitle("My Order");
+		choiceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		choiceFrame.setResizable(false);
 
 	}
 
@@ -561,63 +830,22 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
-		
+
 		if (s == "Pizza") {
 			// String foodCategoryChosen = (String)cbMenu.getSelectedItem();
 			framePizza.setVisible(true);
 			frame.setVisible(false);
+
 		} else if (s == "Salad") {
 			frame.setVisible(false);
 		} else if (s == "Pasta") {
+			framePasta.setVisible(true);
 			frame.setVisible(false);
 		} else if (s == "Dessert") {
 			frame.setVisible(false);
 		} else if (s == "Beverage") {
 			frame.setVisible(false);
 		}
-		
-		if(e.getSource() == JavaDinerButtonPizza) {
-			frame.setVisible(true);
-			framePizza.setVisible(false);
-		}
-		
-		ArrayList<Order> orderList = new ArrayList<Order>();
-		// Add order to Arraylist to store info in memory
-		try {
-			if (e.getSource() == orderPizzaButton1) {
-				tempOrderObj = new Order();
-				tempOrderObj.addToCart(customerObj.phoneNumber, pizza1.getText(), 1, 15.00);
-				orderList.add(tempOrderObj);
-				System.out.println("added to Cart");
-				tempOrderObj.placeOrder(orderList);
-				System.out.println("Order is placed");
-			} else if (e.getSource() == orderPizzaButton2) {
-				tempOrderObj = new Order();
-				tempOrderObj.addToCart(customerObj.phoneNumber, pizza2.getText(), 1, 14.00);
-				orderList.add(tempOrderObj);
-				System.out.println("added to Cart");
-				tempOrderObj.placeOrder(orderList);
-				System.out.println("Order is placed");
-			} else if (e.getSource() == orderPizzaButton3) {
-				tempOrderObj = new Order();
-				tempOrderObj.addToCart(customerObj.phoneNumber, pizza3.getText(), 1, 16.00);
-				orderList.add(tempOrderObj);
-				System.out.println("added to Cart");
-				tempOrderObj.placeOrder(orderList);
-				System.out.println("Order is placed");
-			} else if (e.getSource() == orderPizzaButton4) {
-
-			}
-		} catch (SQLException s1) {
-			System.out.println(s1.getMessage());
-
-		}
-//		//add this where I display shopping cart
-//		double sum = 0.0;
-//		for (Order i : orderList) {
-//			sum += i.price;
-//		}
-//		sum *= 1.09;
 
 		if (e.getSource() == reservationButton) {
 			reservationFrame.setVisible(true);
@@ -628,11 +856,211 @@ public class RestaurantProject extends JFrame implements ActionListener {
 			frame.setVisible(false);
 		}
 
-		if (e.getSource() == findButton) {
+		System.out.println("Arraylist size : before addto cart" + orderList.size());
+		// Add order to Arraylist to store info in memory
+		// try {
+
+		// to add to cart
+		if (e.getSource() == orderPizzaButton1) {
+			tempOrderObj = new Order();
+			// tempOrderObj.addToCart(customerObj.phoneNumber, pizza1.getText(), 1, 15.00);
+			tempOrderObj.addToCart(pizza1.getText(), 1, 15.00);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
+
+		} else if (e.getSource() == orderPizzaButton2) {
+			tempOrderObj = new Order();
+			tempOrderObj.addToCart(pizza2.getText(), 1, 14.00);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
+
+		} else if (e.getSource() == orderPizzaButton3) {
+			tempOrderObj = new Order();
+			tempOrderObj.addToCart(pizza3.getText(), 1, 16.00);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
+
+		} else if (e.getSource() == orderPizzaButton4) {
+
+		}
+
+		if (e.getSource() == orderPastaButton1) {
+			tempOrderObj = new Order();
+			tempOrderObj.addToCart(pasta1.getText(), 1, 12.00);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
+
+		} else if (e.getSource() == orderPastaButton2) {
+			tempOrderObj = new Order();
+			tempOrderObj.addToCart(pasta2.getText(), 1, 11.50);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
+
+		} else if (e.getSource() == orderPastaButton3) {
+			tempOrderObj = new Order();
+			tempOrderObj.addToCart(pasta3.getText(), 1, 10.00);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
+
+		} else if (e.getSource() == orderPastaButton4) {
+			tempOrderObj = new Order();
+			tempOrderObj.addToCart(pasta4.getText(), 1, 10.00);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
+
+		}
+
+		if (e.getSource() == JavaDinerButtonPizza) {
+			frame.setVisible(true);
+			framePizza.setVisible(false);
+		} else if (e.getSource() == JavaDinerButtonPasta) {
+			frame.setVisible(true);
+			framePasta.setVisible(false);
+		}
+
+		if (e.getSource() == exit) {
+			frame.setVisible(true);
 			reservationFrame.setVisible(false);
 		}
-		
+
+		String numOfPeople = (String) cbNumPeople.getSelectedItem();
+		String dateOfReservation = (String) cbDay.getSelectedItem();
+		String timeSlot = (String) cbTimeSlot.getSelectedItem();
+		int count = 0;
+		if (e.getSource() == findButton) {
+			try {
+				// static void findTable(String dateOfReservation, String timeSlot ) throws
+				// SQLException {
+				count = Reservation.findTable();
+				System.out.println("DEBUG :count :" + count);
+				if (count == 0) {
+					System.out.println("Sorry, please select a different date as it is fully booked ");
+				} else {
+					reservationFrame2.setVisible(true);
+					reservationFrame.setVisible(false);
+				}
+			} catch (Exception e1) {
+				System.out.println("Debug findtable :" + e1.getMessage());
+				e1.printStackTrace(System.out);
+			}
+
+		}
+
+		if (e.getSource() == confirmReservationButton) {
+
+			String name = (String) tfNameR.getText();
+			String telephoneNum = (String) tfTelephoneNumR.getText();
+			try {
+				// static void placeReservation(String name, String phoneNum, String
+				// numOfPeople, String dateOfReservation, String timeSlot) throws SQLException {
+				Reservation.placeReservation(name, telephoneNum, numOfPeople, dateOfReservation, timeSlot, count);
+			} catch (Exception e1) {
+				System.out.println("Debug Reservation :" + e1.getMessage());
+				e1.printStackTrace(System.out);
+			}
+
+		}
+
+		// to see cart
+		if (e.getSource() == orderingPageButton) {
+			cartFrame.setVisible(true);
+			Order.displayOrder(orderList);
+			frame.setVisible(false);
+			System.out.println("Arraylist size : place order page: " + orderList.size());
+		}
+
+		if (e.getSource() == backToShoppingButton) {
+			frame.setVisible(true);
+			cartFrame.setVisible(false);
+		} else if (e.getSource() == checkoutButton) {
+			choiceFrame.setVisible(true);
+			cartFrame.setVisible(false);
+		}
+
+		if (e.getSource() == deliveryButton) {
+
+			name.setVisible(true);
+			telephoneNum.setVisible(true);
+			city.setVisible(true);
+			address.setVisible(true);
+			zip.setVisible(true);
+			tfName.setVisible(true);
+			tfAddress.setVisible(true);
+			tfCity.setVisible(true);
+			tfZip.setVisible(true);
+			tfTelephoneNum.setVisible(true);
+
+		} else if (e.getSource() == carryoutButton) {
+
+			name.setVisible(true);
+			telephoneNum.setVisible(true);
+			city.setVisible(false);
+			address.setVisible(false);
+			zip.setVisible(false);
+			tfName.setVisible(true);
+			tfAddress.setVisible(false);
+			tfCity.setVisible(false);
+			tfZip.setVisible(false);
+			tfTelephoneNum.setVisible(true);
+
+		}
+
+		if (e.getSource() == goBackToCartButton) {
+			cartFrame.setVisible(true);
+			choiceFrame.setVisible(false);
+
+			deliveryButton.setEnabled(true);
+			carryoutButton.setEnabled(true);
+
+			name.setVisible(false);
+			telephoneNum.setVisible(false);
+			city.setVisible(false);
+			address.setVisible(false);
+			zip.setVisible(false);
+			tfName.setVisible(false);
+			tfAddress.setVisible(false);
+			tfCity.setVisible(false);
+			tfZip.setVisible(false);
+			tfTelephoneNum.setVisible(false);
+
+			tfName.setText("");
+			tfAddress.setText("");
+			tfCity.setText("");
+			tfZip.setText("");
+			tfTelephoneNum.setText("");
+		}
+
+		try {
+
+			if (e.getSource() == placeOrderButton) {
+				result.setVisible(true);
+				tempCustomerObj.name = tfName.getText();
+				tempCustomerObj.streetAddress = tfAddress.getText();
+				tempCustomerObj.zip = tfZip.getText();
+				tempCustomerObj.city = tfCity.getText();
+				tempCustomerObj.phoneNumber = tfTelephoneNum.getText();
+
+				// customerList.add(tempCustomerObj);
+				System.out.println("Name :" + tempCustomerObj.name);
+				System.out.println("phone :" + tempCustomerObj.phoneNumber);
+				Order.placeOrder(orderList, tempCustomerObj);
+				System.out.println("Order has been placed ");
+
+				placeOrderButton.setEnabled(false);
+				goBackToCartButton.setEnabled(false);
+
+			}
+
+		} catch (Exception e1) {
+			System.out.println("Debug :" + e1.getMessage());
+			e1.printStackTrace(System.out);
+		}
+		// DEBUG
+		// ArrayList<Order> orderList = new ArrayList<Order>();
+
+//		//add this where I display shopping cart
+//		
+
 	}
-	
 
 }
