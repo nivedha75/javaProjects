@@ -9,7 +9,7 @@ import oracle.jdbc.pool.OracleDataSource;
 
 class Reservation {
 
-	static int findTable() throws SQLException {
+	static int findTable(String dateOfReservation, String timeSlot) throws SQLException {
 		OracleDataSource ods = new OracleDataSource();
 		ods.setURL("jdbc:oracle:thin:@//localhost:1521/XE");
 		// jdbc:oracle:thin@//[hostname]:[port]/[DB service name]
@@ -17,28 +17,42 @@ class Reservation {
 		ods.setPassword("javajuice"); // [password]
 		Connection conn = ods.getConnection();
 
-		String selectsql = "SELECT CAPACITY FROM SEATING_CAPACITY";
-				//WHERE DATEOFRESERVATION = ? AND TIMESLOT = ?";
-
-		PreparedStatement pstmt1 = conn.prepareStatement(selectsql);
-
-		boolean foundflag;
-		int count = 0;
-		System.out.println("DEBUG : select from SEATING_CAPACITY: ");
-		//pstmt1.setString(1, dateOfReservation);
-		//pstmt1.setString(2, timeSlot);
-		foundflag = pstmt1.execute();
-		System.out.println("DEBUG : foundflag :" + foundflag);
-		if (foundflag) {
-			ResultSet rslt = pstmt1.getResultSet();
-			while (rslt.next()) {
-				count = rslt.getInt(1);
-				System.out.println("DEBUG : COUNT " + count);
-			}
+		
+		int capacity = 0;
+		System.out.println("DEBUG : SEATING_CAPACITY: dateOfReservation " + dateOfReservation);
+		System.out.println("DEBUG : SEATING_CAPACITY: timeSlot " + timeSlot);
+		try {
+		//String selectsql = "SELECT CAPACITY FROM SEATING_CAPACITY WHERE DATEOFRESERVATION=? AND TIMESLOT = ?" ;
+		PreparedStatement pstmt2 = conn.prepareStatement("SELECT CAPACITY FROM SEATING_CAPACITY WHERE DATEOFRESERVATION=? AND TIMESLOT = ?" );
+		pstmt2.setString(1, dateOfReservation);
+		pstmt2.setString(2, timeSlot);
+		//pstmt2.setInt(1, 25);
+		//ResultSet rslt = pstmt2.executeQuery();
+		boolean foundflag = pstmt2.execute();
+		
+		ResultSet rslt = pstmt2.getResultSet();
+		//System.out.println("result : " + rslt.first());
+		while (rslt.next()) {
+			 capacity  = rslt.getInt(1);
+			System.out.println("DEBUG : Capacity inside findtable :" + capacity);
 		}
+		
+		}
+		catch (Exception e1) {
+			System.out.println("Debug findtable :" + e1.getMessage());
+			e1.printStackTrace(System.out);
+			}
+		return capacity;
+		//System.out.println("DEBUG : foundflag :" + foundflag);
+		//if (foundflag) {
+			//ResultSet rslt = pstmt1.getResultSet();
+			
+		//} else {
+		//	count = 31;
+		//	return capacity;
+		//}
 		// pstmt1.getUpdateCount()
 
-		return count;
 	}
 
 	/*
@@ -88,7 +102,7 @@ class Reservation {
 		PreparedStatement pstmt1 = conn.prepareStatement(insertreservationsql);
 
 		boolean flag1;
-		System.out.println("DEBUG : insert into reservations: numOfPeople "+ numOfPeople);
+		System.out.println("DEBUG : insert into reservations: numOfPeople " + numOfPeople);
 		pstmt1.setString(1, name);
 		pstmt1.setString(2, phoneNum);
 		pstmt1.setString(3, numOfPeople);
@@ -97,7 +111,8 @@ class Reservation {
 		flag1 = pstmt1.execute();
 		int capacity = count;
 		int people = Integer.parseInt(numOfPeople);
-		capacity = (capacity - people);
+		//capacity = (capacity - people);
+		capacity -= people;
 
 		// ADD LOGIC to update/adjust SEATING_CAPACITY
 		// UPDATE SEATING_CAPACITY SET CAPACITY = count
