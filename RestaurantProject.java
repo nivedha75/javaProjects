@@ -532,7 +532,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		findButton.setToolTipText("Find a Table");
 
 		// set location here
-		bookedLabel.setBounds(750, 850, 500, 100);
+		bookedLabel.setBounds(750, 850, 1100, 100);
 		exit.setBounds(1820, 0, 100, 100);
 		cbNumPeople.setBounds(550, 450, 800, 50);
 		// reservationPanel.addBorder( new EmptyBorder(10, 10, 10, 10) );
