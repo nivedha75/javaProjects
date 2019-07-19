@@ -30,6 +30,8 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	Customer tempCustomerObj;
 
 	ArrayList<Order> orderList = new ArrayList<Order>();
+
+	static int capacity = 0;
 	// ArrayList<Customer> customerList = new ArrayList<Customer>();
 
 	// main page
@@ -71,6 +73,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JLabel pizza1Price;
 	static JLabel pizza2Price;
 	static JLabel pizza3Price;
+	static JLabel pizza4Price;
 
 	// pasta page
 	static JFrame framePasta;
@@ -105,6 +108,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JComboBox cbTimeSlot;
 	static JButton findButton;
 	static JButton exit;
+	static JLabel bookedLabel;
 
 	// reservations page 2
 	static JFrame reservationFrame2;
@@ -115,13 +119,17 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JLabel labelNameR;
 	static JLabel labelTelephoneNumR;
 	static JButton confirmReservationButton;
+	static JLabel resultOfConfirmR;
+	static JLabel resultOfFindingTable;
+	static JButton JavaDinerButtonR;
+	//static JLabel didNotFill;
 
 	// Cart page
 	static JFrame cartFrame;
 	static JLayeredPane lpCart;
 	static JLabel cartLabel;
 	static JButton checkoutButton;
-	static JButton backToShoppingButton;
+	// static JButton backToShoppingButton;
 	static JTextArea taCart;
 	static JTextArea totalCost;
 	static JScrollPane spItems;
@@ -145,6 +153,14 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JTextField tfZip;
 	static JLabel result;
 	static JButton goBackToCartButton;
+	static JButton exitButtonChoice;
+
+	// about us
+	static JFrame frameAboutUs;
+	static JLayeredPane layeredPaneAU;
+	static JButton JavaDinerButtonAboutUs;
+	static JTextArea taAboutUs;
+	static JLabel aboutUsLabel;
 
 	public static void main(String[] args) {
 		new RestaurantProject();
@@ -159,6 +175,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pastaPage();
 		reservationsPage();
 		reservationsPage2();
+		aboutUsPage();
 		CartPage();
 		DeliveryOrCarryoutPage();
 
@@ -182,28 +199,28 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		menuBar.add(menu);
 		pizzaMenuItem = new JMenuItem("Pizza");
 		pastaMenuItem = new JMenuItem("Pasta");
-		saladMenuItem = new JMenuItem("Salad");
-		dessertMenuItem = new JMenuItem("Dessert");
-		beverageMenuItem = new JMenuItem("Beverage");
+		// saladMenuItem = new JMenuItem("Salad");
+		// dessertMenuItem = new JMenuItem("Dessert");
+		// beverageMenuItem = new JMenuItem("Beverage");
 		pizzaMenuItem.addActionListener(this);
 		pastaMenuItem.addActionListener(this);
-		saladMenuItem.addActionListener(this);
-		dessertMenuItem.addActionListener(this);
-		beverageMenuItem.addActionListener(this);
+		// saladMenuItem.addActionListener(this);
+		// dessertMenuItem.addActionListener(this);
+		// beverageMenuItem.addActionListener(this);
 
 		menu.add(pizzaMenuItem);
 		menu.add(pastaMenuItem);
-		menu.add(saladMenuItem);
-		menu.add(dessertMenuItem);
-		menu.add(beverageMenuItem);
+		// menu.add(saladMenuItem);
+		// menu.add(dessertMenuItem);
+		// menu.add(beverageMenuItem);
 
 		menu.setFont(new Font("Bittermilk", Font.PLAIN, 72));
 		// menuBar.setFont(new Font("Bittermilk", Font.PLAIN, 72));
 		pizzaMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
 		pastaMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
-		saladMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
-		dessertMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
-		beverageMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
+		// saladMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
+		// dessertMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
+		// beverageMenuItem.setFont(new Font("Bittermilk", Font.PLAIN, 72));
 
 		// reservation button
 		reservationButton = new JButton();
@@ -281,20 +298,21 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		orderPizzaButton3.setToolTipText("Add to Cart");
 		orderPizzaButton4 = new JButton("Add to Cart");
 		orderPizzaButton4.addActionListener(this);
-		orderPizzaButton4.setToolTipText("Customize");
+		orderPizzaButton4.setToolTipText("Add to Cart");
 		pizza1 = new JLabel("Gourmet Veggie");
 		pizza2 = new JLabel("Italian Supreme");
 		pizza3 = new JLabel("Garden Party");
-		pizza4 = new JLabel("Create Your Own");
+		pizza4 = new JLabel("Cheese Pizza");
 		pizza1Description = new JTextArea(
 				"TOMATOES, MUSHROOMS, \nGREEN PEPPERS, \nONIONS, BLACK OLIVES \nON ZESTY RED SAUCE");
 		pizza2Description = new JTextArea(
 				"ARTICHOKE HEARTS, ZUCCHINI, \nSPINACH, MUSHROOMS, \nTOMATOES, GARLIC, RED & \nGREEN ONIONS ON OUR CREAMY \nGARLIC SAUCE");
 		pizza3Description = new JTextArea("MUSHROOMS, GREEN PEPPERS, \nONIONS, BLACK OLIVES ON \nZESTY RED SAUCE");
-		pizza4Description = new JTextArea("CREATE YOUR OWN PIZZA \nWITH OUR \nNEVERENDING OPTIONS");
+		pizza4Description = new JTextArea("CLASSIC CHEESE PIZZA \nPERFECTED, NEVER BEEN BETTER");
 		pizza1Price = new JLabel("$12.00");
 		pizza2Price = new JLabel("$11.50");
 		pizza3Price = new JLabel("$10.00");
+		pizza4Price = new JLabel("$6.00");
 
 		// set location here
 		pizzaTitle.setBounds(870, 120, 200, 100);
@@ -316,6 +334,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pizza1Price.setBounds(80, 420, 200, 100);
 		pizza2Price.setBounds(1030, 420, 200, 100);
 		pizza3Price.setBounds(80, 860, 200, 100);
+		pizza4Price.setBounds(1030, 860, 200, 100);
 
 		// set font here
 		pizzaTitle.setFont(new Font("Arial", Font.ITALIC, 45));
@@ -334,6 +353,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		pizza1Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
 		pizza2Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
 		pizza3Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
+		pizza4Price.setFont(new Font("Bittermilk", Font.BOLD, 30));
 
 		pizzaPicLabel = new JLabel();
 		pizzaPicLabel.setIcon(new ImageIcon("C:/SavedPictures/PizzaMain.jpg"));
@@ -359,6 +379,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpPizza.add(pizza1Price, new Integer(100));
 		lpPizza.add(pizza2Price, new Integer(100));
 		lpPizza.add(pizza3Price, new Integer(100));
+		lpPizza.add(pizza4Price, new Integer(100));
 
 		framePizza = new JFrame();
 		framePizza.add(lpPizza);
@@ -494,6 +515,8 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		 */
 
 		// create components
+		bookedLabel = new JLabel("Sorry, that spot is fully booked");
+		bookedLabel.setVisible(false);
 		exit = new JButton("X");
 		exit.setFont(new Font("Arial", Font.PLAIN, 40));
 		exit.setBorderPainted(false);
@@ -509,6 +532,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		findButton.setToolTipText("Find a Table");
 
 		// set location here
+		bookedLabel.setBounds(750, 850, 500, 100);
 		exit.setBounds(1820, 0, 100, 100);
 		cbNumPeople.setBounds(550, 450, 800, 50);
 		// reservationPanel.addBorder( new EmptyBorder(10, 10, 10, 10) );
@@ -521,6 +545,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		findButton.setBounds(730, 780, 400, 100);
 
 		// set font here
+		bookedLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		cbNumPeople.setFont(new Font("Times New Roman", Font.BOLD, 15));
 		cbDay.setFont(new Font("Times New Roman", Font.BOLD, 15));
 		cbTimeSlot.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -546,24 +571,13 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		cbDay.addItem("7/23");
 		cbDay.addItem("7/24");
 		cbDay.addItem("7/25");
-		cbTimeSlot.addItem("12:00 PM");
-		cbTimeSlot.addItem("12:30 PM");
-		cbTimeSlot.addItem("1:00 PM");
-		cbTimeSlot.addItem("1:30 PM");
-		cbTimeSlot.addItem("2:00 PM");
-		cbTimeSlot.addItem("2:30 PM");
-		cbTimeSlot.addItem("3:00 PM");
-		cbTimeSlot.addItem("3:30 PM");
-		cbTimeSlot.addItem("4:00 PM");
-		cbTimeSlot.addItem("4:30 PM");
-		cbTimeSlot.addItem("5:00 PM");
-		cbTimeSlot.addItem("5:30 PM");
+
 		cbTimeSlot.addItem("6:00 PM");
-		cbTimeSlot.addItem("6:30 PM");
+		// cbTimeSlot.addItem("6:30 PM");
 		cbTimeSlot.addItem("7:00 PM");
-		cbTimeSlot.addItem("7:30 PM");
+		// cbTimeSlot.addItem("7:30 PM");
 		cbTimeSlot.addItem("8:00 PM");
-		cbTimeSlot.addItem("8:30 PM");
+		// cbTimeSlot.addItem("8:30 PM");
 		cbTimeSlot.addItem("9:00 PM");
 
 		// reservationPanel.setLayout(new GridLayout(3, 1));
@@ -585,6 +599,8 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpReservation.add(cbDay, new Integer(100));
 		lpReservation.add(cbTimeSlot, new Integer(100));
 		lpReservation.add(exit, new Integer(100));
+		lpReservation.add(bookedLabel, new Integer(100));
+
 
 		// reservation frame
 		reservationFrame = new JFrame();
@@ -600,6 +616,28 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	}
 
 	public void reservationsPage2() {
+
+		JavaDinerButtonR = new JButton();
+		JavaDinerButtonR.addActionListener(this);
+		JavaDinerButtonR.setBounds(720, 30, 450, 110);
+		JavaDinerButtonR.setBorderPainted(false);
+		JavaDinerButtonR.setContentAreaFilled(false);
+		JavaDinerButtonR.setToolTipText("Return to main page");
+
+		//didNotFill = new JLabel("Please enter information in all the fields");
+		//didNotFill.setBounds(120, 650, 1000, 50);
+		//didNotFill.setFont(new Font("Bittermilk", Font.PLAIN, 35));
+		//didNotFill.setVisible(false);
+
+		resultOfFindingTable = new JLabel("Reservation at that time is available");
+		resultOfFindingTable.setBounds(670, 120, 600, 200);
+		resultOfFindingTable.setFont(new Font("Bittermilk", Font.PLAIN, 40));
+
+		resultOfConfirmR = new JLabel("We have reserved your seats!");
+		resultOfConfirmR.setBounds(870, 390, 600, 200);
+		resultOfConfirmR.setFont(new Font("Bittermilk", Font.PLAIN, 50));
+		resultOfConfirmR.setVisible(false);
+
 		confirmReservationButton = new JButton();
 		confirmReservationButton.setBounds(600, 790, 650, 120);
 		confirmReservationButton.setBorderPainted(false);
@@ -634,6 +672,11 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpReservation2.add(labelNameR, new Integer(100));
 		lpReservation2.add(labelTelephoneNumR, new Integer(100));
 		lpReservation2.add(confirmReservationButton, new Integer(100));
+		lpReservation2.add(resultOfFindingTable, new Integer(100));
+		lpReservation2.add(resultOfConfirmR, new Integer(100));
+		lpReservation2.add(JavaDinerButtonR, new Integer(100));
+		//lpReservation2.add(didNotFill, new Integer(100));
+
 
 		reservationFrame2 = new JFrame();
 		reservationFrame2.add(lpReservation2);
@@ -673,12 +716,14 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		checkoutButton.setContentAreaFilled(false);
 		checkoutButton.setToolTipText("Continue With Order");
 
-		backToShoppingButton = new JButton();
-		backToShoppingButton.addActionListener(this);
-		backToShoppingButton.setBounds(65, 930, 700, 120);
-		backToShoppingButton.setBorderPainted(false);
-		backToShoppingButton.setContentAreaFilled(false);
-		backToShoppingButton.setToolTipText("Continue Shopping");
+		/*
+		 * backToShoppingButton = new JButton();
+		 * backToShoppingButton.addActionListener(this);
+		 * backToShoppingButton.setBounds(65, 930, 700, 120);
+		 * backToShoppingButton.setBorderPainted(false);
+		 * backToShoppingButton.setContentAreaFilled(false);
+		 * backToShoppingButton.setToolTipText("Continue Shopping");
+		 */
 
 		cartLabel = new JLabel();
 		cartLabel.setIcon(new ImageIcon("C:/SavedPictures/MyOrder.jpg"));
@@ -688,7 +733,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpCart.setPreferredSize(new Dimension(1920, 1080));
 		lpCart.add(cartLabel, new Integer(50));
 		lpCart.add(checkoutButton, new Integer(100));
-		lpCart.add(backToShoppingButton, new Integer(100));
+		// lpCart.add(backToShoppingButton, new Integer(100));
 
 		cartFrame = new JFrame();
 		cartFrame.add(lpCart);
@@ -766,10 +811,17 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		goBackToCartButton.setContentAreaFilled(false);
 		goBackToCartButton.setToolTipText("Go Back to Cart");
 
+		exitButtonChoice = new JButton("EXIT");
+		exitButtonChoice.addActionListener(this);
+		exitButtonChoice.setBounds(1770, 0, 150, 150);
+		exitButtonChoice.setFont(new Font("Arial", Font.PLAIN, 40));
+		exitButtonChoice.setBorderPainted(false);
+		exitButtonChoice.setToolTipText("Exit the website");
+
 		choiceLabel = new JLabel();
 		choiceLabel.setIcon(new ImageIcon("C:/SavedPictures/DeliveryOrCarryout.jpg"));
 		choiceLabel.setBounds(0, 0, 1920, 1080);
-		
+
 		result = new JLabel("\nYour order has been placed!");
 		result.setFont(new Font("Arial", Font.PLAIN, 30));
 		result.setBounds(1415, 610, 420, 130);
@@ -793,6 +845,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpChoice.add(tfAddress, new Integer(100));
 		lpChoice.add(tfZip, new Integer(100));
 		lpChoice.add(result, new Integer(100));
+		lpChoice.add(exitButtonChoice, new Integer(100));
 
 		name.setVisible(false);
 		telephoneNum.setVisible(false);
@@ -813,6 +866,46 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		choiceFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		choiceFrame.setResizable(false);
 
+	}
+
+	public void aboutUsPage() {
+
+		JavaDinerButtonAboutUs = new JButton();
+		JavaDinerButtonAboutUs.addActionListener(this);
+		JavaDinerButtonAboutUs.setBounds(720, 30, 450, 110);
+		JavaDinerButtonAboutUs.setBorderPainted(false);
+		JavaDinerButtonAboutUs.setContentAreaFilled(false);
+		JavaDinerButtonAboutUs.setToolTipText("Return to main page");
+
+		taAboutUs = new JTextArea();
+		taAboutUs.setEditable(false);
+		taAboutUs.setBounds(20, 170, 780, 850);
+		taAboutUs.setFont(new Font("Bittermilk", Font.PLAIN, 40));
+		taAboutUs.append(
+				"\nIn 1952, Java Diner was opened and became an \nimmediate success. It was opened first by a man \nnicknamed Java Virtual Machine. "
+						+ "He created the \nbest pizza and pasta recipes and used the finest \ningredients. He taught his chefs first-rate \ncooking techniques. \n\n"
+						+ "Today, we use only his superior ingredients, \nalong with his original recipes to bake \nextraordinary pizzas and cook outstanding \npastas that are worth sharing.\n\n");
+		taAboutUs.append("Phone #: (123) 123-1010 \n");
+		taAboutUs.append("Location: 101 Java Road, San Francisco CA\n");
+		taAboutUs.append("Hours: 6pm - 9pm Monday-Sunday");
+		aboutUsLabel = new JLabel();
+		aboutUsLabel.setIcon(new ImageIcon("C:/SavedPictures/AboutUs.jpg"));
+		aboutUsLabel.setBounds(0, 0, 1920, 1080);
+
+		layeredPaneAU = new JLayeredPane();
+		layeredPaneAU.setPreferredSize(new Dimension(1920, 1080));
+		layeredPaneAU.add(aboutUsLabel, new Integer(50));
+		layeredPaneAU.add(JavaDinerButtonAboutUs, new Integer(100));
+		layeredPaneAU.add(taAboutUs, new Integer(100));
+
+		frameAboutUs = new JFrame();
+		frameAboutUs.setSize(1920, 1080);
+		frameAboutUs.setResizable(false);
+		frameAboutUs.setTitle("Restaurant");
+		frameAboutUs.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameAboutUs.setVisible(false);
+		frameAboutUs.setLocationRelativeTo(null);
+		frameAboutUs.add(layeredPaneAU);
 	}
 
 	public void disableMain() {
@@ -852,8 +945,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 			reservationFrame.setVisible(true);
 			frame.setVisible(false);
 		} else if (e.getSource() == aboutUsButton) {
-			frame.setVisible(false);
-		} else if (e.getSource() == orderingPageButton) {
+			frameAboutUs.setVisible(true);
 			frame.setVisible(false);
 		}
 
@@ -865,24 +957,27 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		if (e.getSource() == orderPizzaButton1) {
 			tempOrderObj = new Order();
 			// tempOrderObj.addToCart(customerObj.phoneNumber, pizza1.getText(), 1, 15.00);
-			tempOrderObj.addToCart(pizza1.getText(), 1, 15.00);
+			tempOrderObj.addToCart(pizza1.getText(), 1, 12.00);
 			orderList.add(tempOrderObj);
 			System.out.println("added to Cart");
 
 		} else if (e.getSource() == orderPizzaButton2) {
 			tempOrderObj = new Order();
-			tempOrderObj.addToCart(pizza2.getText(), 1, 14.00);
+			tempOrderObj.addToCart(pizza2.getText(), 1, 11.50);
 			orderList.add(tempOrderObj);
 			System.out.println("added to Cart");
 
 		} else if (e.getSource() == orderPizzaButton3) {
 			tempOrderObj = new Order();
-			tempOrderObj.addToCart(pizza3.getText(), 1, 16.00);
+			tempOrderObj.addToCart(pizza3.getText(), 1, 10.00);
 			orderList.add(tempOrderObj);
 			System.out.println("added to Cart");
 
 		} else if (e.getSource() == orderPizzaButton4) {
-
+			tempOrderObj = new Order();
+			tempOrderObj.addToCart(pizza4.getText(), 1, 6.00);
+			orderList.add(tempOrderObj);
+			System.out.println("added to Cart");
 		}
 
 		if (e.getSource() == orderPastaButton1) {
@@ -917,6 +1012,9 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		} else if (e.getSource() == JavaDinerButtonPasta) {
 			frame.setVisible(true);
 			framePasta.setVisible(false);
+		} else if (e.getSource() == JavaDinerButtonAboutUs) {
+			frame.setVisible(true);
+			frameAboutUs.setVisible(false);
 		}
 
 		if (e.getSource() == exit) {
@@ -927,15 +1025,16 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		String numOfPeople = (String) cbNumPeople.getSelectedItem();
 		String dateOfReservation = (String) cbDay.getSelectedItem();
 		String timeSlot = (String) cbTimeSlot.getSelectedItem();
-		int count = 0;
+
 		if (e.getSource() == findButton) {
 			try {
-				//static void findTable(String dateOfReservation, String timeSlot ) throws
+				// static void findTable(String dateOfReservation, String timeSlot ) throws
 				// SQLException {
-				count = Reservation.findTable(dateOfReservation,timeSlot);
-				System.out.println("DEBUG :count inside main program :" + count);
-				if (count == 0 || (Integer.parseInt(numOfPeople) > count)) {
+				capacity = Reservation.findTable(dateOfReservation, timeSlot);
+				System.out.println("DEBUG :capacity inside main program :" + capacity);
+				if (capacity == 0 || (Integer.parseInt(numOfPeople) > capacity)) {
 					System.out.println("please select a different date / timeslot as it is fully booked ");
+					bookedLabel.setVisible(true);
 				} else {
 					reservationFrame2.setVisible(true);
 					reservationFrame.setVisible(false);
@@ -948,17 +1047,37 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == confirmReservationButton) {
+			
+			//if (tfNameR.getText().length() < 1 || tfTelephoneNumR.getText().length() < 1) {
+				//didNotFill.setVisible(true);
+				
+			//} else {
+				String name = (String) tfNameR.getText();
+				String telephoneNum = (String) tfTelephoneNumR.getText();
+				try {
+					// static void placeReservation(String name, String phoneNum, String
+					// numOfPeople, String dateOfReservation, String timeSlot) throws SQLException {
+					System.out.println("capacity used in place reservation method:" + capacity);
+					Reservation.placeReservation(name, telephoneNum, numOfPeople, dateOfReservation, timeSlot,
+							capacity);
+				} catch (Exception e1) {
+					System.out.println("Debug Reservation :" + e1.getMessage());
+					e1.printStackTrace(System.out);
+				}
 
-			String name = (String) tfNameR.getText();
-			String telephoneNum = (String) tfTelephoneNumR.getText();
-			try {
-				// static void placeReservation(String name, String phoneNum, String
-				// numOfPeople, String dateOfReservation, String timeSlot) throws SQLException {
-				Reservation.placeReservation(name, telephoneNum, numOfPeople, dateOfReservation, timeSlot, count);
-			} catch (Exception e1) {
-				System.out.println("Debug Reservation :" + e1.getMessage());
-				e1.printStackTrace(System.out);
-			}
+				resultOfConfirmR.setVisible(true);
+				confirmReservationButton.setEnabled(false);
+				bookedLabel.setVisible(false);
+			//}
+
+		}
+
+		if (e.getSource() == JavaDinerButtonR) {
+			frame.setVisible(true);
+			resultOfConfirmR.setVisible(false);
+			confirmReservationButton.setEnabled(true);
+			reservationFrame2.setVisible(false);
+			//didNotFill.setVisible(false);
 
 		}
 
@@ -970,10 +1089,12 @@ public class RestaurantProject extends JFrame implements ActionListener {
 			System.out.println("Arraylist size : place order page: " + orderList.size());
 		}
 
-		if (e.getSource() == backToShoppingButton) {
-			frame.setVisible(true);
-			cartFrame.setVisible(false);
-		} else if (e.getSource() == checkoutButton) {
+		/*
+		 * if (e.getSource() == backToShoppingButton) { frame.setVisible(true);
+		 * cartFrame.setVisible(false); }
+		 */
+
+		if (e.getSource() == checkoutButton) {
 			choiceFrame.setVisible(true);
 			cartFrame.setVisible(false);
 		}
@@ -1050,17 +1171,39 @@ public class RestaurantProject extends JFrame implements ActionListener {
 				placeOrderButton.setEnabled(false);
 				goBackToCartButton.setEnabled(false);
 
+				exitButtonChoice.setEnabled(true);
+				// main(null);
+
+				name.setVisible(false);
+				telephoneNum.setVisible(false);
+				city.setVisible(false);
+				address.setVisible(false);
+				zip.setVisible(false);
+				tfName.setVisible(false);
+				tfAddress.setVisible(false);
+				tfCity.setVisible(false);
+				tfZip.setVisible(false);
+				tfTelephoneNum.setVisible(false);
+
+				tfName.setText("");
+				tfAddress.setText("");
+				tfCity.setText("");
+				tfZip.setText("");
+				tfTelephoneNum.setText("");
+
 			}
 
 		} catch (Exception e1) {
 			System.out.println("Debug :" + e1.getMessage());
 			e1.printStackTrace(System.out);
 		}
+
 		// DEBUG
 		// ArrayList<Order> orderList = new ArrayList<Order>();
 
-//		//add this where I display shopping cart
-//		
+		if (e.getSource() == exitButtonChoice) {
+			System.exit(0);
+		}
 
 	}
 
