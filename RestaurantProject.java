@@ -122,7 +122,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 	static JLabel resultOfConfirmR;
 	static JLabel resultOfFindingTable;
 	static JButton JavaDinerButtonR;
-	//static JLabel didNotFill;
+	static JLabel didNotFill;
 
 	// Cart page
 	static JFrame cartFrame;
@@ -515,7 +515,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		 */
 
 		// create components
-		bookedLabel = new JLabel("Sorry, that spot is fully booked");
+		bookedLabel = new JLabel("Sorry, that spot is fully booked for the # of people you entered");//for the # of people they entered
 		bookedLabel.setVisible(false);
 		exit = new JButton("X");
 		exit.setFont(new Font("Arial", Font.PLAIN, 40));
@@ -624,10 +624,10 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		JavaDinerButtonR.setContentAreaFilled(false);
 		JavaDinerButtonR.setToolTipText("Return to main page");
 
-		//didNotFill = new JLabel("Please enter information in all the fields");
-		//didNotFill.setBounds(120, 650, 1000, 50);
-		//didNotFill.setFont(new Font("Bittermilk", Font.PLAIN, 35));
-		//didNotFill.setVisible(false);
+		didNotFill = new JLabel("Please enter information in all the fields");
+		didNotFill.setBounds(120, 650, 1000, 50);
+		didNotFill.setFont(new Font("Bittermilk", Font.PLAIN, 35));
+		didNotFill.setVisible(false);
 
 		resultOfFindingTable = new JLabel("Reservation at that time is available");
 		resultOfFindingTable.setBounds(670, 120, 600, 200);
@@ -675,7 +675,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 		lpReservation2.add(resultOfFindingTable, new Integer(100));
 		lpReservation2.add(resultOfConfirmR, new Integer(100));
 		lpReservation2.add(JavaDinerButtonR, new Integer(100));
-		//lpReservation2.add(didNotFill, new Integer(100));
+		lpReservation2.add(didNotFill, new Integer(100));
 
 
 		reservationFrame2 = new JFrame();
@@ -1048,10 +1048,10 @@ public class RestaurantProject extends JFrame implements ActionListener {
 
 		if (e.getSource() == confirmReservationButton) {
 			
-			//if (tfNameR.getText().length() < 1 || tfTelephoneNumR.getText().length() < 1) {
-				//didNotFill.setVisible(true);
+			if (tfNameR.getText().length() < 1 || tfTelephoneNumR.getText().length() < 1) {
+				didNotFill.setVisible(true);
 				
-			//} else {
+			} else {
 				String name = (String) tfNameR.getText();
 				String telephoneNum = (String) tfTelephoneNumR.getText();
 				try {
@@ -1068,7 +1068,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 				resultOfConfirmR.setVisible(true);
 				confirmReservationButton.setEnabled(false);
 				bookedLabel.setVisible(false);
-			//}
+			}
 
 		}
 
@@ -1077,7 +1077,7 @@ public class RestaurantProject extends JFrame implements ActionListener {
 			resultOfConfirmR.setVisible(false);
 			confirmReservationButton.setEnabled(true);
 			reservationFrame2.setVisible(false);
-			//didNotFill.setVisible(false);
+			didNotFill.setVisible(false);
 
 		}
 
