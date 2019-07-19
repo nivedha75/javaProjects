@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.text.NumberFormat;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -76,10 +77,13 @@ class Order {
 		this.price = price;
 	}
 
+	static int j = 0;
 	static void displayOrder(ArrayList<Order> orderList) {
-
+		j = 1;
 		System.out.println("DEBUG :Inside displayOrder method :");
+		if(j == 1) {
 		RestaurantProject.taCart = new JTextArea();
+		}
 		RestaurantProject.taCart.setEditable(false);
 		RestaurantProject.taCart.setFont(new Font("Consolas", Font.BOLD, 30));
 
@@ -91,15 +95,12 @@ class Order {
 		// Price");
 		//28 max
 
-		RestaurantProject.spItems = new JScrollPane(RestaurantProject.taCart);
-		RestaurantProject.spItems.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		RestaurantProject.spItems.setBounds(50, 350, 1770, 400);
-
 		double subtotal = 0.0;
 		double total = 0.0;
 		String space = " ";
 		int x;
-
+		NumberFormat formatter = NumberFormat.getCurrencyInstance();
+		
 		for (Order i : orderList) {
 			subtotal += i.price;
 		}
@@ -113,17 +114,22 @@ class Order {
 				space += " ";
 				}
 			}
+			System.out.println(formatter.format(i.price));
 			
 			System.out.println("displayOrder method :" + i.foodOrdered);
 			RestaurantProject.taCart
-					.append("\n " + i.foodOrdered + space + "\t\t\t\t\t \t       " + i.quantity + " \t       \t$" + i.price);
+					.append("\n " + i.foodOrdered + space + "\t\t\t\t\t \t       " + i.quantity + " \t       \t" + formatter.format(i.price));
 			RestaurantProject.taCart
 					.append("\n_______________________________________________________________________________________________________\n");
 			space = " ";
 		}
+		
+		RestaurantProject.spItems = new JScrollPane(RestaurantProject.taCart);
+		RestaurantProject.spItems.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		RestaurantProject.spItems.setBounds(50, 350, 1770, 400);
 
-		RestaurantProject.totalCost.append("\n        Subtotal: $" + subtotal + "\n\n");
-		RestaurantProject.totalCost.append(" Total(with Tax): $" + total);
+		RestaurantProject.totalCost.append("\n        Subtotal: " + formatter.format(subtotal) + "\n\n");
+		RestaurantProject.totalCost.append(" Total(with Tax): " + formatter.format(total));
 		RestaurantProject.lpCart.add(RestaurantProject.spItems, new Integer(100));
 		RestaurantProject.lpCart.add(RestaurantProject.totalCost, new Integer(100));
 	}
