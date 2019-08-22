@@ -1,0 +1,147 @@
+
+public class MoneyLab2 {
+
+	public static void main(String[] args) {
+		/*NOTE: getDigits is the final function for task 7*/
+		
+		System.out.println(onesDigit(1234));
+		System.out.println(tensOnesDigit(1234));
+		System.out.println(tensDigit(1234));
+		System.out.println(hundredsDigit(1234));
+		System.out.println(thousandsDigit(1234));
+		System.out.println(countDigits(1234));
+		getDigits3(12345, 4, 1);
+		System.out.println();
+		System.out.println(getDigits2(12345, 4, 4));
+		System.out.println(getDigits2(12345, 4, 2));
+		System.out.println(getDigits(12345, 0, 0));
+		System.out.println(getDigits(123456789, 6, 2));
+		
+		System.out.println(getDigits(12345, 0, 0));
+		System.out.println(getDigits(12345, 1, 1));
+		System.out.println(getDigits(12345, 4, 4));
+		System.out.println(getDigits(12345, 5, 5));
+		System.out.println(getDigits(12345, 4, 1));
+		System.out.println(getDigits(12345, 3, 0));
+
+	}
+	
+	public static int onesDigit(int a) {
+		return a % 10;
+	}
+	
+	public static int tensOnesDigit(int a) {
+		return a % 100;
+	}
+	
+	public static int tensDigit(int a) {
+		a /= 10;
+		return a % 10;
+		
+	}
+	
+	public static int hundredsDigit(int a) {
+		a /= 10*10;
+		return a % 10;
+	}
+	
+	public static int thousandsDigit(int a) {
+		a /= 10*10*10;
+		return a % 10;
+	}
+	
+	public static int countDigits(int a) {
+		int number = 0;
+		while(a > 0) {
+			a /= 10;
+			number++;
+		}
+		
+		return number;
+	}
+	
+	public static int countEvenDigits(int a) {
+		int number = 0;
+		while(a > 0) {
+			if((a % 10)/2 != 0)
+				number++;
+			a /= 10;
+		}
+		
+		return number;
+	}
+	
+	public static int getDigits (int a, int biggestDigit, int smallestDigit) {
+		System.out.println();
+		int number = 0;
+		int b = a;
+		int lengthNum = 0;
+		while(b != 0) {
+			b /= 10;
+			lengthNum++;
+		}
+		int c = a;
+		int remainder = 0;
+		int power = 1;
+		int counter = 0;
+		for(int i = 0; i <= biggestDigit; i++) {
+			power = 1;
+			remainder = c % 10; //5 //4
+			System.out.println("The remainder is " + remainder);
+			System.out.println("Counter is " + counter);
+			for(int j = 0; j < counter; j ++) {
+				power *= 10;
+			}
+			System.out.println("The power is " + power);
+			number += remainder * power; //5 * 1 //4*10
+			counter ++; //1 //2
+			c /= 10;
+		}
+		
+		for(int k = 0; k < smallestDigit; k++) {
+			number /= 10;
+		}
+		return number;
+	}
+	
+	public static void getDigits3(int a, int biggestDigit, int smallestDigit) {
+		int numberArray[] = new int[5];
+		if(biggestDigit >= smallestDigit && biggestDigit < 5 && smallestDigit < 5) {
+			numberArray[0] = a % 10; //5
+			numberArray[1] = a/10 % 10; //4
+			numberArray[2] = a/100 % 10;
+			numberArray[3] = a/1000 % 10;
+			numberArray[4] = a/10000 % 10; //1
+			
+			for (int i = biggestDigit; i >= smallestDigit; i --) {
+				System.out.print(numberArray[i]);
+			}
+		}
+	}
+	
+	public static int getDigits2(int a, int biggestDigit, int smallestDigit) {
+		int number = 0;
+		int numberArray[] = new int[5];
+		if(biggestDigit >= smallestDigit && biggestDigit < 5 && smallestDigit < 5) {
+			numberArray[0] = a % 10; //5
+			numberArray[1] = (a/10 % 10) * 10; //4
+			numberArray[2] = (a/100 % 10) * 100;
+			numberArray[3] = (a/1000 % 10) * 1000;
+			numberArray[4] = (a/10000 % 10) * 10000; //1
+			
+			for (int i = biggestDigit; i >= smallestDigit; i --) {
+				number += numberArray[i];
+			}
+			
+			while (number % 10 == 0) {
+				number /= 10;
+			}
+			
+		}
+		return number;
+	}
+	
+	
+	
+
+}
